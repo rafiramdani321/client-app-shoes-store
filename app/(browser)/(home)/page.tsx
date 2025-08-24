@@ -1,14 +1,22 @@
-import { ThemeToggle } from "@/components/themeToggle";
 import React from "react";
+import ProductNewArivals from "./new-arivals/page";
+import { ThemeToggle } from "@/components/themeToggle";
+import ProductNike from "./nike/page";
+import ProductAdidas from "./adidas/page";
+import CategoriesGender from "./categories-gender/page";
+import Blog from "./blog/page";
 
 const HomePage = () => {
   return (
     <div>
-      <ThemeToggle />
-      <h1 className="text-5xl text-center font-extrabold">Hello World</h1>
-      <h1 className="text-5xl text-center font-extrabold font-secondary">
-        Hello World
-      </h1>
+      <ProductNewArivals />
+      <ProductNike />
+      <ProductAdidas />
+      <CategoriesGender />
+      <Blog />
+      <div className="mt-40">
+        <ThemeToggle />
+      </div>
     </div>
   );
 };

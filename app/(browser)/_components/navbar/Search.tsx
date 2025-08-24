@@ -3,7 +3,7 @@ import React from "react";
 
 const Search = () => {
   return (
-    <div>
+    <div className="hidden lg:block">
       <SearchIcon className="w-6 h-6 cursor-pointer" />
     </div>
   );

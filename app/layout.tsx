@@ -2,6 +2,9 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
+import { Toaster } from "sonner";
+import { RefreshAccessTokenEffect } from "@/components/refreshAccessTokenEffect";
+import { Providers } from "./providers";
 
 const space_grotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -25,7 +28,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
         className={`${inter.variable} ${space_grotesk.variable} antialiased`}
       >
@@ -34,7 +37,9 @@ export default function RootLayout({
           defaultTheme="light"
           enableSystem={false}
         >
-          {children}
+          <RefreshAccessTokenEffect />
+          <Toaster richColors />
+          <Providers>{children}</Providers>
         </ThemeProvider>
       </body>
     </html>
