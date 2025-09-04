@@ -1,6 +1,4 @@
 import React from "react";
-import { Table } from "@tanstack/react-table";
-import { ChevronDown } from "lucide-react";
 
 import {
   DropdownMenu,
@@ -9,10 +7,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { CategoryList } from "@/types/dashboad.admin.type";
+import { ChevronDown } from "lucide-react";
+import { RolePermissionList } from "@/types/dashboad.admin.type";
+import { Table } from "@tanstack/react-table";
 
 interface ButtonColumnVisibilityProps {
-  table: Table<CategoryList>;
+  table: Table<RolePermissionList>;
 }
 
 const ButtonColumnVisibility = ({ table }: ButtonColumnVisibilityProps) => {

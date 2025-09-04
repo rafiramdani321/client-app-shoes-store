@@ -1,33 +1,42 @@
 "use client";
 
-import React from "react";
-
-import { useCategories } from "@/hooks/useCategories";
-import { DataTableCategories } from "../_components/data-table";
-import { CategoryColumns } from "../_components/columns";
+import { useRolePermissions } from "@/hooks/useRolePermissions";
 import { getPagination, setPagination } from "@/lib/local-storage.helper";
+import React from "react";
+import { DataTableRolePermissions } from "../_components/data-table";
+import { RolePermissionColumns } from "../_components/columns";
 
-const Categories = () => {
-  const { useGetCategories, deleteCategory, deleteManyCategory } =
-    useCategories();
+const RolePermissions = () => {
+  const {
+    useGetRolePermissions,
+    useDeleteRolePermission,
+    useDeleteManyRolePermission,
+  } = useRolePermissions();
 
-  const [page, setPage] = React.useState(() => getPagination("categories"));
+  const [page, setPage] = React.useState(() =>
+    getPagination("role-permissions")
+  );
   React.useEffect(() => {
-    setPagination("categories", page);
+    setPagination("role-permissions", page);
   }, [page]);
-  const limit = 2;
+  const limit = 5;
   const [sortBy, setSortBy] = React.useState<
-    "name" | "slug" | "created_at" | "updated_at" | undefined
+    | "role_name"
+    | "permission_name"
+    | "permission_module"
+    | "created_at"
+    | "updated_at"
+    | undefined
   >(undefined);
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc" | undefined>(
     undefined
   );
-
-  const [searchBy, setSearchBy] = React.useState<"name" | "slug" | "all">(
-    "all"
-  );
+  const [searchBy, setSearchBy] = React.useState<
+    "role_name" | "permission_name" | "permission_module" | "all"
+  >("all");
   const [searchInput, setSearchInput] = React.useState("");
   const [search, setSearch] = React.useState("");
+
   React.useEffect(() => {
     const timeout = setTimeout(() => {
       setSearch(searchInput);
@@ -35,11 +44,10 @@ const Categories = () => {
         setPage(1);
       }
     }, 500);
-
     return () => clearTimeout(timeout);
   }, [searchInput]);
 
-  const { data, isLoading, isError } = useGetCategories({
+  const { data, isLoading, isError } = useGetRolePermissions({
     page,
     limit,
     sortBy,
@@ -50,12 +58,11 @@ const Categories = () => {
 
   return (
     <div>
-      <h1 className="text-xl font-bold mb-4">Categories</h1>
+      <h1 className="text-xl font-bold mb-4">Role Permissions</h1>
       {isError && <p className="text-red-500">Error loading data...</p>}
-
-      <DataTableCategories
-        columns={CategoryColumns({
-          onDelete: (id) => deleteCategory.mutate(id),
+      <DataTableRolePermissions
+        columns={RolePermissionColumns({
+          onDelete: (id) => useDeleteRolePermission.mutate(id),
           onSort: (key) => {
             setSortBy(key);
             setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -63,17 +70,17 @@ const Categories = () => {
           sortBy,
         })}
         data={data?.data ?? []}
-        meta={data?.meta ?? {}}
-        deleteManyCategory={deleteManyCategory}
-        onPageChange={setPage}
+        meta={data?.meta ?? []}
         isLoading={isLoading}
+        onPageChange={setPage}
         searchBy={searchBy}
         setSearchBy={setSearchBy}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
+        deleteManyRolePermissions={useDeleteManyRolePermission}
       />
     </div>
   );
 };
 
-export default Categories;
+export default RolePermissions;

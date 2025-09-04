@@ -12,16 +12,19 @@ import { buildErrorMap } from "@/lib/errorMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { addOrUpdateCategoryValidation } from "@/lib/validations/validationSchema";
+import {
+  addOrUpdateCategoryValidation,
+  addOrUpdateSizeValidation,
+} from "@/lib/validations/validationSchema";
+import { useSizes } from "@/hooks/useSizes";
 
 const UpdateCategory = () => {
   const { id } = useParams();
   const router = useRouter();
-  const categoryId = Array.isArray(id) ? id[0] : id;
-  const { getCategoyById, updateCategory } = useCategories();
+  const sizeId = Array.isArray(id) ? id[0] : id;
+  const { updateSize, getSizeById } = useSizes();
   const [formData, setFormData] = React.useState({
-    name: "",
-    slug: "",
+    size: "",
   });
   const [errorsInput, setErrorsInput] = React.useState<
     Partial<Record<keyof typeof formData, string[]>>
@@ -30,44 +33,39 @@ const UpdateCategory = () => {
   const [autoFocus, setAutoFocus] = React.useState(false);
 
   const inputRef = React.useRef<{
-    name: HTMLInputElement | null;
-    slug: HTMLInputElement | null;
+    size: HTMLInputElement | null;
   }>({
-    name: null,
-    slug: null,
+    size: null,
   });
 
   React.useEffect(() => {
     if (!autoFocus) return;
-    if (errorsInput.name && inputRef.current.name) {
-      inputRef.current.name.focus();
-    } else if (errorsInput.slug && inputRef.current.slug) {
-      inputRef.current.slug.focus();
+    if (errorsInput.size && inputRef.current.size) {
+      inputRef.current.size.focus();
     }
     setAutoFocus(false);
   }, [errorsInput, autoFocus]);
 
-  const { data: category, isLoading, error } = getCategoyById(categoryId || "");
+  const { data: sizes, isLoading, error } = getSizeById(sizeId || "");
 
   React.useEffect(() => {
-    if (!categoryId) return;
+    if (!sizeId) return;
 
-    if (category) {
+    if (sizes) {
+      console.log(sizes);
       setFormData({
-        name: category.name,
-        slug: category.slug,
+        size: sizes.size,
       });
     }
-  }, [category, categoryId]);
+  }, [sizes, sizeId]);
 
   const handleOnChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: name === "slug" ? slugify(value, { lower: true }) : value,
+      [name]: value,
     }));
-
     setErrorsInput({});
   };
 
@@ -76,8 +74,7 @@ const UpdateCategory = () => {
     setLoading(true);
 
     // Validasi frontend
-    const errorsValidationFront =
-      addOrUpdateCategoryValidation.safeParse(formData);
+    const errorsValidationFront = addOrUpdateSizeValidation.safeParse(formData);
     if (!errorsValidationFront.success) {
       const errorsFront = validationResponses(errorsValidationFront);
       setErrorsInput(buildErrorMap<keyof typeof formData>(errorsFront));
@@ -87,11 +84,11 @@ const UpdateCategory = () => {
       return;
     }
 
-    await updateCategory.mutateAsync(
-      { id: categoryId!, ...formData },
+    await updateSize.mutateAsync(
+      { id: sizeId!, ...formData },
       {
         onSuccess: () => {
-          router.replace("/admin/pages/categories/list");
+          router.replace("/admin/pages/sizes/list");
         },
         onError: (err: any) => {
           setAutoFocus(true);
@@ -107,57 +104,33 @@ const UpdateCategory = () => {
   };
 
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading category</p>;
+  if (error) return <p>Error loading sizes</p>;
 
   return (
     <div className="w-full">
-      <h1 className="text-xl font-semibold">Update Category</h1>
+      <h1 className="text-xl font-semibold">Update Size</h1>
       <div className="max-w-full xl:max-w-xl mt-5">
         <form onSubmit={onSubmit}>
           <div className="flex flex-col gap-5">
             <div className="grid gap-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name">Size</Label>
               <Input
                 ref={(e) => {
-                  inputRef.current.name = e;
+                  inputRef.current.size = e;
                 }}
                 autoFocus
-                id="name"
-                name="name"
-                placeholder="name"
+                id="size"
+                name="size"
+                placeholder="size"
                 className={cn(
                   "focus:ring-1 focus:ring-primary",
-                  errorsInput.name?.length &&
+                  errorsInput.size?.length &&
                     "border border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none"
                 )}
-                value={formData.name}
+                value={formData.size}
                 onChange={handleOnChange}
               />
-              {errorsInput.name?.map((msg, i) => (
-                <p
-                  key={i}
-                  className="text-rose-500 text-[11px] ml-1 font-semibold"
-                >{`- ${msg}`}</p>
-              ))}
-            </div>
-            <div className="grid gap-2">
-              <Label htmlFor="slug">Slug</Label>
-              <Input
-                ref={(e) => {
-                  inputRef.current.slug = e;
-                }}
-                id="slug"
-                name="slug"
-                placeholder="slug"
-                className={cn(
-                  "focus:ring-1 focus:ring-primary",
-                  errorsInput.slug?.length &&
-                    "border border-red-500 focus:border-red-500 focus:ring-1 focus:ring-red-500 focus:outline-none"
-                )}
-                value={formData.slug}
-                onChange={handleOnChange}
-              />
-              {errorsInput.slug?.map((msg, i) => (
+              {errorsInput.size?.map((msg, i) => (
                 <p
                   key={i}
                   className="text-rose-500 text-[11px] ml-1 font-semibold"

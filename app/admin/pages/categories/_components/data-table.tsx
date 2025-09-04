@@ -24,7 +24,7 @@ import { useCategories } from "@/hooks/useCategories";
 import SearchBar from "./search";
 import ButtonDeleteDialog from "./btn-delete-dialog";
 import ButtonColumnVisibility from "./btn-column-visibility";
-import PaginationControl from "../../_components/pagination-control";
+import PaginationControl from "../../../_components/pagination-control";
 import { Hint } from "@/components/hint";
 import {
   getColumnsVisibility,

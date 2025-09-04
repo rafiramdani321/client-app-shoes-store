@@ -54,3 +54,23 @@ export const addOrUpdateSubCategoryValidation = z.object({
     .min(2, "SLug must be at least 2 characters"),
   category_id: z.string().nonempty("Category is required"),
 });
+
+export const addOrUpdateRoleValidation = z.object({
+  name: z
+    .string()
+    .nonempty("Name is required")
+    .min(2, "Name must be at least 3 characters"),
+});
+
+export const addOrUpdateSizeValidation = z.object({
+  size: z
+    .string()
+    .nonempty("Size is required.")
+    .min(1, "Size must be at least 1 characters")
+    .max(10, "Size is too long, max 10 characters"),
+});
+
+export const createOrUpdateRolePermission = z.object({
+  role_id: z.string().nonempty(),
+  permission_id: z.string().nonempty(),
+});

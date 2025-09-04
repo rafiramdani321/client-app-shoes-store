@@ -1,3 +1,5 @@
+"use client";
+
 import * as React from "react";
 
 import {
@@ -30,12 +32,25 @@ import { ChevronDown } from "lucide-react";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { usePathname } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { useAuthStore } from "@/stores/useAuthStore";
+import { Role } from "@/constants";
 
 export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const pathname = usePathname();
+  const { user } = useAuthStore();
   const isActivePathname = (href: string) => {
     return pathname === href || pathname.startsWith(href + "/");
   };
+
+  // Filter navigasi
+  const filteredNavigations = React.useMemo(() => {
+    return NavigationsSidebar.filter((nav) => {
+      if (nav.title === "Role Management" && user?.role !== Role.SUPERADMIN) {
+        return false;
+      }
+      return true;
+    });
+  }, [user]);
 
   const renderMenuItem = (
     item: NavigationItems | NavigationSubItem,
@@ -115,7 +130,7 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
       </SidebarHeader>
       <ScrollArea>
         <SidebarContent className="gap-0">
-          {NavigationsSidebar.map((nav) => (
+          {filteredNavigations.map((nav) => (
             <SidebarGroup key={nav.title}>
               <SidebarGroupLabel>{nav.title}</SidebarGroupLabel>
               <SidebarGroupContent>

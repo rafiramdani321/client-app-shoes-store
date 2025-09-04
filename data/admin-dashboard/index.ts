@@ -102,4 +102,33 @@ export const NavigationsSidebar: NavigationTypes[] = [
       },
     ],
   },
+  {
+    title: "Role Management",
+    items: [
+      {
+        title: "Role",
+        href: "/admin/role-management/role",
+        iconName: "SquareChartGantt",
+      },
+      {
+        title: "Permission",
+        href: "/admin/role-management/permission",
+        iconName: "ShieldAlert",
+      },
+      {
+        title: "Role Permission",
+        iconName: "ShieldUser",
+        items: [
+          {
+            title: "List",
+            href: "/admin/role-management/role-permission/list",
+          },
+          {
+            title: "Add",
+            href: "/admin/role-management/role-permission/add",
+          },
+        ],
+      },
+    ],
+  },
 ];

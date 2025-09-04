@@ -17,20 +17,17 @@ export default function AdminLayout({
   const router = useRouter();
   const { accessToken, user, isAuthResolved } = useAuthStore();
 
-  // Check role setelah auth resolved
   React.useEffect(() => {
     if (!isAuthResolved) return;
 
-    const isAdmin =
-      user?.role?.name === Role.ADMIN || user?.role?.name === Role.SUPERADMIN;
+    const isAdmin = user?.role === Role.ADMIN || user?.role === Role.SUPERADMIN;
 
     if (!accessToken || !user || !isAdmin) {
       router.replace("/");
     }
   }, [accessToken, user, isAuthResolved, router]);
 
-  const isAdmin =
-    user?.role?.name === Role.ADMIN || user?.role?.name === Role.SUPERADMIN;
+  const isAdmin = user?.role === Role.ADMIN || user?.role === Role.SUPERADMIN;
 
   if (!isAuthResolved || !accessToken || !user || !isAdmin) {
     return null;

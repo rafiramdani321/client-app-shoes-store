@@ -9,10 +9,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
-import { CategoryList } from "@/types/dashboad.admin.type";
+import { PermissionsList } from "@/types/dashboad.admin.type";
 
 interface ButtonColumnVisibilityProps {
-  table: Table<CategoryList>;
+  table: Table<PermissionsList>;
 }
 
 const ButtonColumnVisibility = ({ table }: ButtonColumnVisibilityProps) => {

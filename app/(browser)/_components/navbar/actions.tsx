@@ -64,8 +64,7 @@ const Actions = () => {
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuGroup>
-                {user?.role?.name === Role.ADMIN ||
-                user?.role?.name === Role.SUPERADMIN ? (
+                {user?.role === Role.ADMIN || user?.role === Role.SUPERADMIN ? (
                   <DropdownMenuItem>
                     <Link href="/admin/dashboard/analytics">
                       Admin Dashboard

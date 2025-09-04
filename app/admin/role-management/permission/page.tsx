@@ -1,33 +1,31 @@
 "use client";
 
-import React from "react";
-
-import { useCategories } from "@/hooks/useCategories";
-import { DataTableCategories } from "../_components/data-table";
-import { CategoryColumns } from "../_components/columns";
+import { useRoles } from "@/hooks/useRoles";
 import { getPagination, setPagination } from "@/lib/local-storage.helper";
+import React from "react";
+import { DataTablePermissions } from "./_components/data-table";
+import { PermissionsColumns } from "./_components/columns";
 
-const Categories = () => {
-  const { useGetCategories, deleteCategory, deleteManyCategory } =
-    useCategories();
+const Permissions = () => {
+  const { useGetPermissions } = useRoles();
 
-  const [page, setPage] = React.useState(() => getPagination("categories"));
+  const [page, setPage] = React.useState(() => getPagination("permissions"));
   React.useEffect(() => {
-    setPagination("categories", page);
+    setPagination("permissions", page);
   }, [page]);
   const limit = 2;
   const [sortBy, setSortBy] = React.useState<
-    "name" | "slug" | "created_at" | "updated_at" | undefined
+    "name" | "module" | "created_at" | "updated_at" | undefined
   >(undefined);
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc" | undefined>(
     undefined
   );
-
-  const [searchBy, setSearchBy] = React.useState<"name" | "slug" | "all">(
+  const [searchBy, setSearchBy] = React.useState<"name" | "module" | "all">(
     "all"
   );
   const [searchInput, setSearchInput] = React.useState("");
   const [search, setSearch] = React.useState("");
+
   React.useEffect(() => {
     const timeout = setTimeout(() => {
       setSearch(searchInput);
@@ -39,7 +37,7 @@ const Categories = () => {
     return () => clearTimeout(timeout);
   }, [searchInput]);
 
-  const { data, isLoading, isError } = useGetCategories({
+  const { data, isLoading, isError } = useGetPermissions({
     page,
     limit,
     sortBy,
@@ -50,12 +48,11 @@ const Categories = () => {
 
   return (
     <div>
-      <h1 className="text-xl font-bold mb-4">Categories</h1>
+      <h1 className="text-xl font-bold mb-4">Permissions</h1>
       {isError && <p className="text-red-500">Error loading data...</p>}
 
-      <DataTableCategories
-        columns={CategoryColumns({
-          onDelete: (id) => deleteCategory.mutate(id),
+      <DataTablePermissions
+        columns={PermissionsColumns({
           onSort: (key) => {
             setSortBy(key);
             setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -64,7 +61,6 @@ const Categories = () => {
         })}
         data={data?.data ?? []}
         meta={data?.meta ?? {}}
-        deleteManyCategory={deleteManyCategory}
         onPageChange={setPage}
         isLoading={isLoading}
         searchBy={searchBy}
@@ -76,4 +72,4 @@ const Categories = () => {
   );
 };
 
-export default Categories;
+export default Permissions;

@@ -17,63 +17,44 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SubcategoryList } from "@/types/dashboad.admin.type";
-import { Plus } from "lucide-react";
-import Link from "next/link";
-import { Hint } from "@/components/hint";
-import PaginationControl from "../../../_components/pagination-control";
-import ButtonColumnVisibility from "./btn-column-visibility";
+import { RolesList } from "@/types/dashboad.admin.type";
 import {
   getColumnsVisibility,
   setColumnsVisibility,
 } from "@/lib/local-storage.helper";
-import { useSubCategories } from "@/hooks/useSubCategories";
-import ButtonDeleteDialog from "./btn-delete-dialog";
+import PaginationControl from "@/app/admin/_components/pagination-control";
 import SearchBar from "./search";
+import ButtonColumnVisibility from "./bt-column.visibility";
 
 type DataTableProps = {
-  columns: ColumnDef<SubcategoryList>[];
-  data: SubcategoryList[];
+  columns: ColumnDef<RolesList>[];
+  data: RolesList[];
   meta: {
     total: number;
     page: number;
     limit: number;
     totalPages: number;
   };
-  deleteManySubCategory: ReturnType<
-    typeof useSubCategories
-  >["useDeleteManySubcategories"];
   onPageChange: (page: number) => void;
   isLoading: boolean;
-  searchBy: "name" | "slug" | "category" | "all";
-  setSearchBy: React.Dispatch<
-    React.SetStateAction<"name" | "slug" | "category" | "all">
-  >;
   searchInput: string;
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export function DataTableSubCategories({
+export function DataTableRoles({
   columns,
   data,
   meta,
-  deleteManySubCategory,
   onPageChange,
   isLoading,
-  searchBy,
-  setSearchBy,
   searchInput,
   setSearchInput,
 }: DataTableProps) {
-  const [rowSelection, setRowSelection] = React.useState({});
-
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(() =>
-      getColumnsVisibility("subcategoriesColumns")
-    );
+    React.useState<VisibilityState>(() => getColumnsVisibility("rolesColumns"));
 
   React.useEffect(() => {
-    setColumnsVisibility("subcategoriesColumns", columnVisibility);
+    setColumnsVisibility("rolesColumns", columnVisibility);
   }, [columnVisibility]);
 
   const table = useReactTable({
@@ -82,37 +63,17 @@ export function DataTableSubCategories({
     getRowId: (row) => row.id,
     getCoreRowModel: getCoreRowModel(),
     onColumnVisibilityChange: setColumnVisibility,
-    onRowSelectionChange: setRowSelection,
     state: {
       columnVisibility,
-      rowSelection,
     },
   });
 
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-x-2 justify-between">
-        <Hint asChild label="Add sub category" side="right">
-          <Link
-            href="/admin/pages/sub-categories/add"
-            className="border p-1 rounded-md hover:bg-muted"
-          >
-            <Plus />
-          </Link>
-        </Hint>
-        <SearchBar
-          searchBy={searchBy}
-          searchInput={searchInput}
-          setSearchBy={setSearchBy}
-          setSearchInput={setSearchInput}
-        />
+        <SearchBar searchInput={searchInput} setSearchInput={setSearchInput} />
         <ButtonColumnVisibility table={table} />
       </div>
-      <ButtonDeleteDialog
-        rowSelection={rowSelection}
-        deleteManySubCategory={deleteManySubCategory}
-        setRowSelection={setRowSelection}
-      />
       <div className="overflow-hidden rounded-md border">
         <Table>
           <TableHeader>

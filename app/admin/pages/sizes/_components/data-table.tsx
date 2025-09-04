@@ -8,6 +8,8 @@ import {
   useReactTable,
   VisibilityState,
 } from "@tanstack/react-table";
+import Link from "next/link";
+import { Plus } from "lucide-react";
 
 import {
   Table,
@@ -17,63 +19,47 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SubcategoryList } from "@/types/dashboad.admin.type";
-import { Plus } from "lucide-react";
-import Link from "next/link";
-import { Hint } from "@/components/hint";
+import { CategoryList, SizeList } from "@/types/dashboad.admin.type";
+import { useCategories } from "@/hooks/useCategories";
 import PaginationControl from "../../../_components/pagination-control";
-import ButtonColumnVisibility from "./btn-column-visibility";
+import { Hint } from "@/components/hint";
 import {
   getColumnsVisibility,
   setColumnsVisibility,
 } from "@/lib/local-storage.helper";
-import { useSubCategories } from "@/hooks/useSubCategories";
+import { useSizes } from "@/hooks/useSizes";
+import ButtonColumnVisibility from "./btn-column-visibility";
 import ButtonDeleteDialog from "./btn-delete-dialog";
-import SearchBar from "./search";
 
 type DataTableProps = {
-  columns: ColumnDef<SubcategoryList>[];
-  data: SubcategoryList[];
+  columns: ColumnDef<SizeList>[];
+  data: SizeList[];
   meta: {
     total: number;
     page: number;
     limit: number;
     totalPages: number;
   };
-  deleteManySubCategory: ReturnType<
-    typeof useSubCategories
-  >["useDeleteManySubcategories"];
+  deleteManySizes: ReturnType<typeof useSizes>["deleteManySizes"];
   onPageChange: (page: number) => void;
   isLoading: boolean;
-  searchBy: "name" | "slug" | "category" | "all";
-  setSearchBy: React.Dispatch<
-    React.SetStateAction<"name" | "slug" | "category" | "all">
-  >;
-  searchInput: string;
-  setSearchInput: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export function DataTableSubCategories({
+export function DataTableSize({
   columns,
   data,
   meta,
-  deleteManySubCategory,
   onPageChange,
   isLoading,
-  searchBy,
-  setSearchBy,
-  searchInput,
-  setSearchInput,
+  deleteManySizes,
 }: DataTableProps) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const [columnVisibility, setColumnVisibility] =
-    React.useState<VisibilityState>(() =>
-      getColumnsVisibility("subcategoriesColumns")
-    );
+    React.useState<VisibilityState>(() => getColumnsVisibility("sizesColumns"));
 
   React.useEffect(() => {
-    setColumnsVisibility("subcategoriesColumns", columnVisibility);
+    setColumnsVisibility("sizesColumns", columnVisibility);
   }, [columnVisibility]);
 
   const table = useReactTable({
@@ -92,25 +78,19 @@ export function DataTableSubCategories({
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-x-2 justify-between">
-        <Hint asChild label="Add sub category" side="right">
+        <Hint asChild label="Add Size" side="right">
           <Link
-            href="/admin/pages/sub-categories/add"
+            href="/admin/pages/sizes/add"
             className="border p-1 rounded-md hover:bg-muted"
           >
             <Plus />
           </Link>
         </Hint>
-        <SearchBar
-          searchBy={searchBy}
-          searchInput={searchInput}
-          setSearchBy={setSearchBy}
-          setSearchInput={setSearchInput}
-        />
         <ButtonColumnVisibility table={table} />
       </div>
       <ButtonDeleteDialog
         rowSelection={rowSelection}
-        deleteManySubCategory={deleteManySubCategory}
+        deleteManySizes={deleteManySizes}
         setRowSelection={setRowSelection}
       />
       <div className="overflow-hidden rounded-md border">

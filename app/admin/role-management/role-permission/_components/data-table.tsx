@@ -17,63 +17,63 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { SubcategoryList } from "@/types/dashboad.admin.type";
+import { RolePermissionList } from "@/types/dashboad.admin.type";
 import { Plus } from "lucide-react";
 import Link from "next/link";
 import { Hint } from "@/components/hint";
 import PaginationControl from "../../../_components/pagination-control";
-import ButtonColumnVisibility from "./btn-column-visibility";
 import {
   getColumnsVisibility,
   setColumnsVisibility,
 } from "@/lib/local-storage.helper";
-import { useSubCategories } from "@/hooks/useSubCategories";
-import ButtonDeleteDialog from "./btn-delete-dialog";
 import SearchBar from "./search";
+import ButtonColumnVisibility from "./btn-column-visibility";
+import { useRolePermissions } from "@/hooks/useRolePermissions";
+import ButtonDeleteDialog from "./btn-delete-dialog";
+
+type Search = "role_name" | "permission_name" | "permission_module" | "all";
 
 type DataTableProps = {
-  columns: ColumnDef<SubcategoryList>[];
-  data: SubcategoryList[];
+  columns: ColumnDef<RolePermissionList>[];
+  data: RolePermissionList[];
   meta: {
     total: number;
     page: number;
     limit: number;
     totalPages: number;
   };
-  deleteManySubCategory: ReturnType<
-    typeof useSubCategories
-  >["useDeleteManySubcategories"];
+  deleteManyRolePermissions: ReturnType<
+    typeof useRolePermissions
+  >["useDeleteManyRolePermission"];
   onPageChange: (page: number) => void;
   isLoading: boolean;
-  searchBy: "name" | "slug" | "category" | "all";
-  setSearchBy: React.Dispatch<
-    React.SetStateAction<"name" | "slug" | "category" | "all">
-  >;
+  searchBy: Search;
+  setSearchBy: React.Dispatch<React.SetStateAction<Search>>;
   searchInput: string;
   setSearchInput: React.Dispatch<React.SetStateAction<string>>;
 };
 
-export function DataTableSubCategories({
+export function DataTableRolePermissions({
   columns,
   data,
   meta,
-  deleteManySubCategory,
   onPageChange,
   isLoading,
   searchBy,
   setSearchBy,
   searchInput,
   setSearchInput,
+  deleteManyRolePermissions,
 }: DataTableProps) {
   const [rowSelection, setRowSelection] = React.useState({});
 
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>(() =>
-      getColumnsVisibility("subcategoriesColumns")
+      getColumnsVisibility("rolePermissions")
     );
 
   React.useEffect(() => {
-    setColumnsVisibility("subcategoriesColumns", columnVisibility);
+    setColumnsVisibility("rolePermissions", columnVisibility);
   }, [columnVisibility]);
 
   const table = useReactTable({
@@ -92,9 +92,9 @@ export function DataTableSubCategories({
   return (
     <div className="w-full">
       <div className="flex items-center py-4 gap-x-2 justify-between">
-        <Hint asChild label="Add sub category" side="right">
+        <Hint asChild label="Add Role Permission" side="right">
           <Link
-            href="/admin/pages/sub-categories/add"
+            href="/admin/role-management/role-permission/add"
             className="border p-1 rounded-md hover:bg-muted"
           >
             <Plus />
@@ -110,7 +110,7 @@ export function DataTableSubCategories({
       </div>
       <ButtonDeleteDialog
         rowSelection={rowSelection}
-        deleteManySubCategory={deleteManySubCategory}
+        deleteManyRolePermission={deleteManyRolePermissions}
         setRowSelection={setRowSelection}
       />
       <div className="overflow-hidden rounded-md border">
