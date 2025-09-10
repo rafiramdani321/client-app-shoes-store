@@ -12,173 +12,52 @@ import {
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
 
-const data = [
-  {
-    name: "Nike",
-    href: "/nike",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-  {
-    name: "Adidas",
-    href: "/adidas",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-  {
-    name: "Vans",
-    href: "/vans",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-  {
-    name: "Converse",
-    href: "/converse",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-  {
-    name: "Pantofel",
-    href: "/pantofel",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-  {
-    name: "Men's",
-    href: "/men",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-  {
-    name: "Women's",
-    href: "/women",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-  {
-    name: "Kid's",
-    href: "/kid",
-    subCategories: [
-      {
-        name: "Sub Categories 1",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 2",
-        href: "/#",
-      },
-      {
-        name: "Sub Categories 3",
-        href: "/#",
-      },
-    ],
-  },
-];
+interface CategoryProps {
+  data: {
+    name: string;
+    slug: string;
+    SubCategory?: {
+      name: string;
+      slug: string;
+    }[];
+  }[];
+}
 
-const NavLink = () => {
+const NavLink = ({ categories }: { categories: CategoryProps }) => {
   return (
     <NavigationMenu viewport={false}>
       <NavigationMenuList>
-        {data.map((item, i) => (
+        {categories.data.map((item, i) => (
           <NavigationMenuItem key={i}>
-            <NavigationMenuTrigger className="text[16px] tracking-wide font-medium">
-              {item.name}
-            </NavigationMenuTrigger>
-            <NavigationMenuContent>
-              <ul className="grid w-[200px] gap-4">
-                <li>
-                  {item.subCategories.map((subitem, i) => (
-                    <NavigationMenuLink asChild key={i}>
-                      <Link href="#">{subitem.name}</Link>
-                    </NavigationMenuLink>
-                  ))}
-                </li>
-              </ul>
-            </NavigationMenuContent>
+            {item.SubCategory && item.SubCategory.length > 0 ? (
+              <>
+                <NavigationMenuTrigger className="text-[14px] tracking-wide font-medium capitalize">
+                  {item.name}
+                </NavigationMenuTrigger>
+                <NavigationMenuContent>
+                  <ul className="grid w-[200px] gap-2">
+                    {item.SubCategory.map((subitem, j) => (
+                      <li key={j}>
+                        <NavigationMenuLink asChild>
+                          <Link href={`/category/${item.slug}/${subitem.slug}`}>
+                            {subitem.name}
+                          </Link>
+                        </NavigationMenuLink>
+                      </li>
+                    ))}
+                  </ul>
+                </NavigationMenuContent>
+              </>
+            ) : (
+              <NavigationMenuLink asChild>
+                <Link
+                  href={`/category/${item.slug}`}
+                  className="text-[14px] tracking-wide font-medium capitalize px-3 py-2"
+                >
+                  {item.name}
+                </Link>
+              </NavigationMenuLink>
+            )}
           </NavigationMenuItem>
         ))}
       </NavigationMenuList>

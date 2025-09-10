@@ -17,7 +17,7 @@ const SubCategories = () => {
   React.useEffect(() => {
     setPagination("subcategories", page);
   }, [page]);
-  const limit = 2;
+  const limit = 5;
   const [sortBy, setSortBy] = React.useState<
     "name" | "slug" | "category" | "created_at" | "updated_at" | undefined
   >(undefined);

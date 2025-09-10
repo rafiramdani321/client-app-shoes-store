@@ -47,7 +47,7 @@ export const addOrUpdateSubCategoryValidation = z.object({
     .string()
     .nonempty("Name is required.")
     .min(2, "Name must be at least 2 characters")
-    .max(15, "Name is too long, max 15 characters"),
+    .max(30, "Name is too long, max 15 characters"),
   slug: z
     .string()
     .nonempty("Slug is required.")
@@ -73,4 +73,49 @@ export const addOrUpdateSizeValidation = z.object({
 export const createOrUpdateRolePermission = z.object({
   role_id: z.string().nonempty(),
   permission_id: z.string().nonempty(),
+});
+
+export interface SizesType {
+  size_id: string;
+  stock: string;
+}
+
+export const createOrUpdateProduct = z.object({
+  title: z
+    .string()
+    .nonempty("Title is required")
+    .min(3, "Title must be at least 3 characters")
+    .max(50, "Title is too long."),
+  slug: z
+    .string()
+    .nonempty("Slug is required")
+    .min(3, "Slug must be at least 3 characters")
+    .max(100, "Slug is too long."),
+  description: z
+    .string()
+    .nonempty("Description is required")
+    .max(500, "Description is too long"),
+  price: z.coerce
+    .number()
+    .refine((val) => !isNaN(val), { message: "Price must be a number" })
+    .refine((val) => val > 0, { message: "Price must be greater than 0" }),
+  category_id: z.string().nonempty("Category is required"),
+  subcategory_id: z.string(),
+  sizes: z
+    .array(
+      z.object({
+        size_id: z.string().nonempty("Size is required"),
+        stock: z.coerce
+          .number()
+          .refine((val) => !isNaN(val), { message: "Stock must be a number" })
+          .refine((val) => val > 0, {
+            message: "Stock must be greater than 0",
+          }),
+      })
+    )
+    .min(1, "At least one size is required"),
+  files: z
+    .array(z.instanceof(File))
+    .min(1, "At least one image is required")
+    .max(5, "You can only upload up to 5 images"),
 });

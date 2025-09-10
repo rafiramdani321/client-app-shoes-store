@@ -15,7 +15,7 @@ const Categories = () => {
   React.useEffect(() => {
     setPagination("categories", page);
   }, [page]);
-  const limit = 2;
+  const limit = 5;
   const [sortBy, setSortBy] = React.useState<
     "name" | "slug" | "created_at" | "updated_at" | undefined
   >(undefined);

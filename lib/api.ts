@@ -12,9 +12,13 @@ export const apiFetch = async (
     useAuthStore.getState();
 
   const headers: HeadersInit = {
-    "Content-Type": "application/json",
     ...(options?.headers as Record<string, string>),
   };
+
+  // 👉 Jangan set Content-Type kalau body adalah FormData
+  if (!(options?.body instanceof FormData)) {
+    headers["Content-Type"] = "application/json";
+  }
 
   if (withAuth && accessToken) {
     headers["Authorization"] = `Bearer ${accessToken}`;

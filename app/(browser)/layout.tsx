@@ -7,7 +7,7 @@ import { PageNavigationMenu } from "./_components/sidebar";
 import NavHeader from "./_components/navigation-header";
 import Footer from "./_components/footer";
 
-export default function BrowserLayout({
+export default async function BrowserLayout({
   children,
 }: {
   children: React.ReactNode;

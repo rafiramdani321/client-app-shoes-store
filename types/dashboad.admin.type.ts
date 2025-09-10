@@ -169,3 +169,23 @@ export interface RolePermissionList extends RolePermissionsBaseType {
 export interface RolePermissionUpdateType extends RolePermissionCreateType {
   id: string;
 }
+
+export interface ProductBaseType {
+  title: string;
+  slug: string;
+  description: string;
+  price: string;
+  category_id: string;
+  subcategory_id: string;
+  is_active: boolean;
+}
+
+type SizesType = {
+  size_id: string;
+  stock: number;
+};
+
+export interface CreateProductType extends ProductBaseType {
+  files: File[];
+  sizes: SizesType[];
+}

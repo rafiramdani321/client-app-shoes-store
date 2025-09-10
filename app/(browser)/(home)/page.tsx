@@ -16,6 +16,8 @@ const HomePage = () => {
       <Blog />
       <div className="mt-40">
         <ThemeToggle />
+        <h1 className="font-secondary text-3xl">Judul dengan Space Grotesk</h1>
+        <p className="font-sans text-base">Paragraf dengan Inter</p>
       </div>
     </div>
   );
