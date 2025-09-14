@@ -9,7 +9,7 @@ import "react-quill/dist/quill.snow.css";
 import { Hint } from "@/components/hint";
 import { useSizes } from "@/hooks/useSizes";
 import { useCategories } from "@/hooks/useCategories";
-import { createOrUpdateProduct } from "@/lib/validations/validationSchema";
+import { createProductValidation } from "@/lib/validations/validationSchema";
 import { validationResponses } from "@/lib/validations";
 import { buildErrorMap } from "@/lib/errorMap";
 import { showToastError } from "@/lib/toast";
@@ -165,7 +165,7 @@ const AddProduct = () => {
     e.preventDefault();
     setLoading(true);
 
-    const errorsValidationFront = createOrUpdateProduct.safeParse(formData);
+    const errorsValidationFront = createProductValidation.safeParse(formData);
     if (!errorsValidationFront.success) {
       const errorsFront = validationResponses(errorsValidationFront);
       setErrorsInput(buildErrorMap<keyof typeof formData>(errorsFront));

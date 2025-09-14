@@ -52,11 +52,14 @@ export function useCategories() {
           { withAuth: false }
         );
         const data = await res.json();
-        if (!res.ok)
+        if (!res.ok) {
+          showToastError(data.error || "Failed get category by id");
           throw new Error(data.message || "Failed fetch category by id");
+        }
         return data.data;
       },
       enabled: !!id,
+      retry: false,
     });
   };
 
@@ -109,16 +112,17 @@ export function useCategories() {
     mutationFn: async (id: string) => {
       const res = await apiFetch(`/categories/${id}`, { method: "DELETE" });
       const results = await res.json();
-      if (!res.ok)
-        throw new Error(results.message || "Failed to delete category");
+      if (!res.ok) {
+        throw results;
+      }
       return results;
     },
     onSuccess: (results) => {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete category");
     },
   });
 
@@ -130,16 +134,17 @@ export function useCategories() {
       });
 
       const results = await res.json();
-      if (!res.ok)
-        throw new Error(results.message || "Failed to delete categories");
+      if (!res.ok) {
+        throw results;
+      }
       return results;
     },
     onSuccess: (results) => {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["categories"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete categories");
     },
   });
 

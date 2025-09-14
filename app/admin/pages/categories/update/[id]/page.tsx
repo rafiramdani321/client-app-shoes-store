@@ -47,7 +47,11 @@ const UpdateCategory = () => {
     setAutoFocus(false);
   }, [errorsInput, autoFocus]);
 
-  const { data: category, isLoading, error } = getCategoyById(categoryId || "");
+  const {
+    data: category,
+    isLoading,
+    isError,
+  } = getCategoyById(categoryId || "");
 
   React.useEffect(() => {
     if (!categoryId) return;
@@ -106,8 +110,14 @@ const UpdateCategory = () => {
     );
   };
 
+  React.useEffect(() => {
+    if (isError) {
+      router.replace("/admin/pages/categories/list");
+    }
+  }, [isError, router]);
+
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading category</p>;
+  if (isError) return null;
 
   return (
     <div className="w-full">

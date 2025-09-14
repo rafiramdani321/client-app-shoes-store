@@ -5,7 +5,6 @@ import { showToastError, showToastSuccess } from "@/lib/toast";
 import {
   RolePermissionCreateType,
   RolePermissionQueryParams,
-  RolePermissionsBaseType,
   RolePermissionUpdateType,
 } from "@/types/dashboad.admin.type";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
@@ -51,13 +50,13 @@ export function useRolePermissions() {
         });
         const results = await res.json();
         if (!res.ok) {
-          throw new Error(
-            results.message || "Failed get role permission by id"
-          );
+          showToastError(results.error);
+          throw new Error(results.error || "Failed get role permission by id");
         }
         return results;
       },
       enabled: !!id,
+      retry: false,
     });
   };
 
@@ -118,7 +117,7 @@ export function useRolePermissions() {
       });
       const results = await res.json();
       if (!res.ok) {
-        throw new Error(results.message || "Failed to delete role permission");
+        throw results;
       }
       return results;
     },
@@ -126,8 +125,8 @@ export function useRolePermissions() {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["role-permissions"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete role permission");
     },
   });
 
@@ -139,9 +138,7 @@ export function useRolePermissions() {
       });
       const results = await res.json();
       if (!res.ok) {
-        throw new Error(
-          results.message || "Failed delete many role permissions"
-        );
+        throw results;
       }
       return results;
     },
@@ -149,8 +146,8 @@ export function useRolePermissions() {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["role-permissions"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete many role permission");
     },
   });
 

@@ -1,22 +1,14 @@
 "use client";
 
 import React from "react";
-import slugify from "slugify";
-import { cn } from "@/lib/utils";
 
-import { useCategories } from "@/hooks/useCategories";
 import { showToastError } from "@/lib/toast";
 import { validationResponses } from "@/lib/validations";
 import { buildErrorMap } from "@/lib/errorMap";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { useParams, useRouter } from "next/navigation";
-import {
-  addOrUpdateSubCategoryValidation,
-  createOrUpdateRolePermission,
-} from "@/lib/validations/validationSchema";
-import { useSubCategories } from "@/hooks/useSubCategories";
+import { createOrUpdateRolePermission } from "@/lib/validations/validationSchema";
 import {
   Select,
   SelectContent,
@@ -76,7 +68,7 @@ const UpdateRolePermission = () => {
   const {
     data: rolePermision,
     isLoading: loadingRolePermission,
-    error: errorRolePermission,
+    isError,
   } = useGetRolePermissionById(rolePermissionId || "");
 
   React.useEffect(() => {
@@ -141,8 +133,14 @@ const UpdateRolePermission = () => {
     );
   };
 
+  React.useEffect(() => {
+    if (isError) {
+      router.replace("/admin/role-management/role-permission/list");
+    }
+  }, [isError, router]);
+
   if (loadingRolePermission) return <p>Loading...</p>;
-  if (errorRolePermission) return <p>Error loading role permission</p>;
+  if (isError) return null;
 
   return (
     <div className="w-full">

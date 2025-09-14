@@ -1,28 +1,37 @@
 "use client";
 
-import { useRoles } from "@/hooks/useRoles";
+import { useProducts } from "@/hooks/useProducts";
 import { getPagination, setPagination } from "@/lib/local-storage.helper";
 import React from "react";
-import { DataTablePermissions } from "./_components/data-table";
-import { PermissionsColumns } from "./_components/columns";
+import { DataTableProducts } from "../_components/data-table";
+import { ProductColumns } from "../_components/columns";
+import LoadingSpinner from "@/components/loadingSpinner";
 
-const Permissions = () => {
-  const { useGetPermissions } = useRoles();
+const Products = () => {
+  const { useGetProducts, useDeleteProductById, useDeleteManyProducts } =
+    useProducts();
 
-  const [page, setPage] = React.useState(() => getPagination("permissions"));
+  const [page, setPage] = React.useState(() => getPagination("products"));
   React.useEffect(() => {
-    setPagination("permissions", page);
+    setPagination("products", page);
   }, [page]);
-  const limit = 10;
+  const limit = 5;
   const [sortBy, setSortBy] = React.useState<
-    "name" | "module" | "created_at" | "updated_at" | undefined
+    | "title"
+    | "slug"
+    | "price"
+    | "category"
+    | "sub_category"
+    | "created_at"
+    | "updated_at"
+    | undefined
   >(undefined);
   const [sortOrder, setSortOrder] = React.useState<"asc" | "desc" | undefined>(
     undefined
   );
-  const [searchBy, setSearchBy] = React.useState<"name" | "module" | "all">(
-    "all"
-  );
+  const [searchBy, setSearchBy] = React.useState<
+    "title" | "slug" | "category" | "sub_category" | "all"
+  >("all");
   const [searchInput, setSearchInput] = React.useState("");
   const [search, setSearch] = React.useState("");
 
@@ -33,11 +42,10 @@ const Permissions = () => {
         setPage(1);
       }
     }, 500);
-
     return () => clearTimeout(timeout);
   }, [searchInput]);
 
-  const { data, isLoading, isError } = useGetPermissions({
+  const { data, isLoading, isError } = useGetProducts({
     page,
     limit,
     sortBy,
@@ -46,13 +54,16 @@ const Permissions = () => {
     search,
   });
 
+  const isLoadingDeleteting =
+    useDeleteProductById.isPending || useDeleteManyProducts.isPending;
+
   return (
     <div>
-      <h1 className="text-xl font-bold mb-4">Permissions</h1>
+      <h1 className="text-xl font-bold mb-4">Products</h1>
       {isError && <p className="text-red-500">Error loading data...</p>}
-
-      <DataTablePermissions
-        columns={PermissionsColumns({
+      <DataTableProducts
+        columns={ProductColumns({
+          onDelete: (id) => useDeleteProductById.mutate(id),
           onSort: (key) => {
             setSortBy(key);
             setSortOrder((prev) => (prev === "asc" ? "desc" : "asc"));
@@ -60,16 +71,19 @@ const Permissions = () => {
           sortBy,
         })}
         data={data?.data ?? []}
-        meta={data?.meta ?? {}}
-        onPageChange={setPage}
+        meta={data?.meta ?? []}
         isLoading={isLoading}
+        onPageChange={setPage}
         searchBy={searchBy}
         setSearchBy={setSearchBy}
         searchInput={searchInput}
         setSearchInput={setSearchInput}
+        deleteManyProducts={useDeleteManyProducts}
       />
+
+      <LoadingSpinner isLoading={isLoadingDeleteting} />
     </div>
   );
 };
 
-export default Permissions;
+export default Products;

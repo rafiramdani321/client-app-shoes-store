@@ -12,10 +12,7 @@ import { buildErrorMap } from "@/lib/errorMap";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import {
-  addOrUpdateCategoryValidation,
-  addOrUpdateSizeValidation,
-} from "@/lib/validations/validationSchema";
+import { addOrUpdateSizeValidation } from "@/lib/validations/validationSchema";
 import { useSizes } from "@/hooks/useSizes";
 
 const UpdateCategory = () => {
@@ -46,7 +43,7 @@ const UpdateCategory = () => {
     setAutoFocus(false);
   }, [errorsInput, autoFocus]);
 
-  const { data: sizes, isLoading, error } = getSizeById(sizeId || "");
+  const { data: sizes, isLoading, isError } = getSizeById(sizeId || "");
 
   React.useEffect(() => {
     if (!sizeId) return;
@@ -103,8 +100,14 @@ const UpdateCategory = () => {
     );
   };
 
+  React.useEffect(() => {
+    if (isError) {
+      router.replace("/admin/pages/sizes/list");
+    }
+  }, [isError, router]);
+
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading sizes</p>;
+  if (isError) return null;
 
   return (
     <div className="w-full">

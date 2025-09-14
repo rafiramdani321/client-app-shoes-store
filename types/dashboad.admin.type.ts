@@ -1,4 +1,5 @@
 import type { icons } from "lucide-react";
+import { string } from "zod";
 
 export type DynamicIconNameType = keyof typeof icons;
 
@@ -188,4 +189,57 @@ type SizesType = {
 export interface CreateProductType extends ProductBaseType {
   files: File[];
   sizes: SizesType[];
+}
+
+export interface UpdateProductType extends ProductBaseType {
+  id: string;
+}
+
+export interface AddImagesProductType {
+  product_id: string;
+  files: File[];
+}
+
+export interface AddProductSizeType {
+  product_id: string;
+  sizes: SizesType[];
+}
+
+export interface UpdateProductSizeType extends SizesType {
+  id: string;
+}
+
+export interface ProductQueryParams extends QueryParamsBase {
+  searchBy?: "title" | "slug" | "category" | "sub_category";
+  sortBy?:
+    | "title"
+    | "slug"
+    | "price"
+    | "category"
+    | "sub_category"
+    | "created_at"
+    | "updated_at";
+}
+
+export interface ProductListType extends ProductBaseType {
+  id: string;
+  category: {
+    name: string;
+  };
+  sub_category: {
+    name: string;
+  };
+  ProductImage: {
+    id: string;
+    url: string;
+    fileId: string;
+  };
+  ProductSize: {
+    id: string;
+    size: {
+      id: string;
+      size: string;
+    };
+    stock: number;
+  };
 }

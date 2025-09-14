@@ -41,11 +41,13 @@ export function useSizes() {
         const res = await apiFetch(`/sizes/${id}`, { method: "GET" });
         const data = await res.json();
         if (!res.ok) {
+          showToastError(data.error);
           throw new Error(data.message || "Failed fetch size by id");
         }
         return data.data;
       },
       enabled: !!id,
+      retry: false,
     });
   };
 
@@ -69,7 +71,7 @@ export function useSizes() {
       queryClient.invalidateQueries({ queryKey: ["sizes"] });
     },
     onError: (error: any) => {
-      showToastError(error.error || "Validation failed");
+      showToastError(error.error || "Failed add size");
       throw error;
     },
   });
@@ -90,7 +92,6 @@ export function useSizes() {
     },
     onError: (error: any) => {
       showToastError(error.error || "Validation failed");
-      throw error;
     },
   });
 
@@ -98,15 +99,17 @@ export function useSizes() {
     mutationFn: async (id: string) => {
       const res = await apiFetch(`/sizes/${id}`, { method: "DELETE" });
       const results = await res.json();
-      if (!res.ok) throw new Error(results.message || "Failed to delete size");
+      if (!res.ok) {
+        throw results;
+      }
       return results;
     },
     onSuccess: (results) => {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["sizes"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete size");
     },
   });
 
@@ -118,15 +121,17 @@ export function useSizes() {
       });
 
       const results = await res.json();
-      if (!res.ok) throw new Error(results.message || "Failed to delete sizes");
+      if (!res.ok) {
+        throw results;
+      }
       return results;
     },
     onSuccess: (results) => {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["sizes"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete many sizes");
     },
   });
 

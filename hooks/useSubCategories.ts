@@ -53,11 +53,13 @@ export function useSubCategories() {
         );
         const results = await res.json();
         if (!res.ok) {
+          showToastError(results.error);
           throw new Error(results.message || "Failed get sub category by id");
         }
         return results;
       },
       enabled: !!id,
+      retry: false,
     });
   };
 
@@ -69,7 +71,7 @@ export function useSubCategories() {
       });
       const results = await res.json();
       if (!res.ok) {
-        throw new Error(results.message || "Failed add sub category");
+        throw results;
       }
       return results;
     },
@@ -78,7 +80,7 @@ export function useSubCategories() {
       queryClient.invalidateQueries({ queryKey: ["sub-categories"] });
     },
     onError: (error: any) => {
-      showToastError(error.error || "Validation failed");
+      showToastError(error.error || "Failed add sub category");
       throw error;
     },
   });
@@ -91,7 +93,7 @@ export function useSubCategories() {
       });
       const results = await res.json();
       if (!res.ok) {
-        throw new Error(results.message || "Failed update sub category");
+        throw results;
       }
       return results;
     },
@@ -110,7 +112,7 @@ export function useSubCategories() {
       const res = await apiFetch(`/sub-categories/${id}`, { method: "DELETE" });
       const results = await res.json();
       if (!res.ok) {
-        throw new Error(results.message || "Failed to delete sub category");
+        throw results;
       }
       return results;
     },
@@ -118,8 +120,8 @@ export function useSubCategories() {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["sub-categories"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete sub category");
     },
   });
 
@@ -131,7 +133,7 @@ export function useSubCategories() {
       });
       const results = await res.json();
       if (!res.ok) {
-        throw new Error(results.message || "Failed delete many sub categories");
+        throw results;
       }
       return results;
     },
@@ -139,8 +141,8 @@ export function useSubCategories() {
       showToastSuccess(results.message);
       queryClient.invalidateQueries({ queryKey: ["sub-categories"] });
     },
-    onError: () => {
-      showToastError("Something went wrong");
+    onError: (error: any) => {
+      showToastError(error.error || "Failed delete many sub categories");
     },
   });
 

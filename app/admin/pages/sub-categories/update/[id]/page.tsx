@@ -72,7 +72,7 @@ const UpdateSubCategory = () => {
   const {
     data: subCategory,
     isLoading,
-    error,
+    isError,
   } = useGetSubcategoryById(subCategoryId || "");
 
   React.useEffect(() => {
@@ -139,8 +139,14 @@ const UpdateSubCategory = () => {
     );
   };
 
+  React.useEffect(() => {
+    if (isError) {
+      router.replace("/admin/pages/sub-categories/list");
+    }
+  }, [isError, router]);
+
   if (isLoading) return <p>Loading...</p>;
-  if (error) return <p>Error loading category</p>;
+  if (isError) return null;
 
   return (
     <div className="w-full">
@@ -198,7 +204,7 @@ const UpdateSubCategory = () => {
               ))}
             </div>
             <div className="grid gap-2">
-              <Label htmlFor="slug">Category</Label>
+              <Label htmlFor="category">Category</Label>
               {!isLoadingGetCagories && (
                 <Select
                   key={formData.category_id}
