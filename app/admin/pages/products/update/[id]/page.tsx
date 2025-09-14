@@ -10,11 +10,7 @@ import { Hint } from "@/components/hint";
 import { useSizes } from "@/hooks/useSizes";
 import { useCategories } from "@/hooks/useCategories";
 import { showToastError } from "@/lib/toast";
-import {
-  CategoryList,
-  SizeList,
-  UpdateProductType,
-} from "@/types/dashboad.admin.type";
+import { CategoryList, SizeList } from "@/types/dashboad.admin.type";
 import CategoriesSerive from "@/services/categories";
 import { useProducts } from "@/hooks/useProducts";
 import { Input } from "@/components/ui/input";

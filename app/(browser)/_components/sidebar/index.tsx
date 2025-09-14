@@ -14,10 +14,9 @@ export const PageNavigationMenu = async () => {
   });
   return (
     <>
-      <Wrapper>
+      <Wrapper footer={<FooterSidebar />}>
         <Toggle />
-        <LinkNavigation categories={categories} />
-        <FooterSidebar />
+        <LinkNavigation categories={categories.data ?? []} />
       </Wrapper>
     </>
   );

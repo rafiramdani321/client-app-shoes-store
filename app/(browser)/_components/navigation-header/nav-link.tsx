@@ -35,11 +35,18 @@ const NavLink = ({ categories }: { categories: CategoryProps }) => {
                   {item.name}
                 </NavigationMenuTrigger>
                 <NavigationMenuContent>
-                  <ul className="grid w-[200px] gap-2">
+                  <ul className="grid w-[200px] gap-1">
+                    <li>
+                      <NavigationMenuLink asChild>
+                        <Link href={`/products/${item.slug}`}>
+                          All {item.name}
+                        </Link>
+                      </NavigationMenuLink>
+                    </li>
                     {item.SubCategory.map((subitem, j) => (
                       <li key={j}>
                         <NavigationMenuLink asChild>
-                          <Link href={`/category/${item.slug}/${subitem.slug}`}>
+                          <Link href={`/products/${item.slug}/${subitem.slug}`}>
                             {subitem.name}
                           </Link>
                         </NavigationMenuLink>
@@ -51,7 +58,7 @@ const NavLink = ({ categories }: { categories: CategoryProps }) => {
             ) : (
               <NavigationMenuLink asChild>
                 <Link
-                  href={`/category/${item.slug}`}
+                  href={`/products/${item.slug}`}
                   className="text-[14px] tracking-wide font-medium capitalize px-3 py-2"
                 >
                   {item.name}
