@@ -18,13 +18,17 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Button } from "@/components/ui/button";
 import { Role } from "@/constants";
+import { useCarts } from "@/hooks/useCarts";
 
 const Actions = () => {
   const { accessToken, isAuthResolved, clearAccessToken, user } =
     useAuthStore();
+  const { useGetCartsByUser } = useCarts();
+  const isLoggedIn = !!accessToken;
   const [loading, setLoading] = React.useState(false);
 
-  const isLoggedIn = !!accessToken;
+  const { data, isLoading: loadingGetCarts } = useGetCartsByUser(isLoggedIn);
+
   if (!isAuthResolved) return null;
 
   const handleLogout = async () => {
@@ -54,7 +58,17 @@ const Actions = () => {
         </Link>
       ) : (
         <div className="flex items-center">
-          <Handbag className="w-6 h-6 cursor-pointer mr-1" />
+          <div className="relative">
+            {data?.CartItem.length > 0 ? (
+              <span
+                className="absolute bg-primary border rounded-md px-0.5
+             text-secondary text-xs -right-2 w-[22px] text-center truncate"
+              >
+                {data?.CartItem.length}
+              </span>
+            ) : null}
+            <Handbag className="w-6 h-6 cursor-pointer mr-1" />
+          </div>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="rounded-md">

@@ -9,12 +9,9 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ProductListType } from "@/types/product.type";
 
-type productProps = {
-  products: unknown[];
-};
-
-const CarouselProduct = ({ products }: productProps) => {
+const CarouselProduct = ({ products }: { products: ProductListType[] }) => {
   const [slidesPerView, setSlidesPerView] = React.useState(2);
   const [emblaApi, setEmblaApi] = React.useState<any>(null);
   const [canPrev, setCanPrev] = React.useState(false);
@@ -74,12 +71,12 @@ const CarouselProduct = ({ products }: productProps) => {
       className="w-full px-2"
     >
       <CarouselContent>
-        {products.map((_, index) => (
+        {products.map((product, index) => (
           <CarouselItem
             key={index}
             className="basis-1/2 sm:basis-1/3 md:basis-1/4 lg:basis-1/5"
           >
-            <ProductCard i={index} />
+            <ProductCard product={product} />
           </CarouselItem>
         ))}
       </CarouselContent>

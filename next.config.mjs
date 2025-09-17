@@ -2,7 +2,7 @@
 const nextConfig = {
   images: {
     domains: [
-      "i.pinimg.com"
+      "i.pinimg.com", "c78h8pe176.ufs.sh"
     ]
   }
 };

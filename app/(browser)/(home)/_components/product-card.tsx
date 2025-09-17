@@ -1,33 +1,38 @@
+"use client";
+
+import { ProductListType } from "@/types/product.type";
 import { Heart } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 
-const ProductCard = (data: { i: number }) => {
+const ProductCard = ({ product }: { product: ProductListType }) => {
+  if (!product) return null;
   return (
-    <Link href={`/product/sample`} className="block">
+    <Link href={`/products/${product.slug}`} className="block">
       <div className="bg-background dark:bg-primary-foreground rounded-md">
-        {/* Product Image */}
-        <div className="bg-neutral-200/30 dark:bg-black/30 flex items-center justify-center rounded-md rounded-b-none overflow-hidden">
+        <div className="bg-neutral-200/30 dark:bg-black/30 flex items-center justify-center rounded-md rounded-b-none overflow-hidden aspect-[1/1]">
           <Image
-            src={"/images/2.png"}
-            alt="Nike Air Jordan High Red Unisex"
+            src={product.ProductImage[0].url}
+            alt={product.title}
             width={500}
             height={500}
-            className="object-contain max-h-full transition-transform duration-300 hover:scale-105"
+            className="object-contain w-full h-full transition-transform duration-300 hover:scale-105"
           />
         </div>
 
         {/* Product Info */}
         <div className="mt-3 space-y-1 px-2 pb-2.5">
-          <p className="text-sm md:text-base font-semibold leading-snug line-clamp-2 hover:underline">
-            Nike Air Jordan High Red
+          <p className="text-sm md:text-base font-semibold leading-snug line-clamp-2 hover:underline truncate">
+            {product.title}
           </p>
-          <p className="text-xs md:text-sm text-gray-500">Unisex Shoes</p>
+          <p className="text-xs md:text-sm text-gray-500 truncate">
+            {product.category.name}
+          </p>
 
           <div className="flex items-center justify-between mt-1">
             <p className="text-sm md:text-base font-semibold text-primary">
-              ${data.i}
+              ${product.price}
             </p>
             <button
               type="button"

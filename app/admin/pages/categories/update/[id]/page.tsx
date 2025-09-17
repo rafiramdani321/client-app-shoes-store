@@ -15,8 +15,8 @@ import { Label } from "@/components/ui/label";
 import { addOrUpdateCategoryValidation } from "@/lib/validations/validationSchema";
 
 const UpdateCategory = () => {
-  const { id } = useParams();
   const router = useRouter();
+  const { id } = useParams();
   const categoryId = Array.isArray(id) ? id[0] : id;
   const { getCategoyById, updateCategory } = useCategories();
   const [formData, setFormData] = React.useState({

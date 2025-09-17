@@ -4,10 +4,9 @@ import React from "react";
 import Link from "next/link";
 
 import CarouselProduct from "../_components/carousel-product";
+import { ProductListType } from "@/types/product.type";
 
-const ResultsNewArivals = () => {
-  const products = Array.from({ length: 15 });
-
+const ResultsNewArivals = ({ products }: { products: ProductListType[] }) => {
   return (
     <section className="w-full">
       <div className="flex justify-between items-center mb-4">
