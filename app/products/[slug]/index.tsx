@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import createDOMPurify from "dompurify"; // ⬅️ Import factory
+import createDOMPurify from "dompurify";
 
 import { ChevronUp } from "lucide-react";
 
@@ -15,6 +15,7 @@ import { Button } from "@/components/ui/button";
 import ButtonOptions from "../_components/buttonOptions";
 import { useRouter } from "next/navigation";
 import { useCarts } from "@/hooks/useCarts";
+import CardCheckout from "../_components/cardCheckout";
 
 const ProductDetail = ({ product }: { product: ProductListType }) => {
   const DOMPurify = React.useMemo(
@@ -229,77 +230,16 @@ const ProductDetail = ({ product }: { product: ProductListType }) => {
           </div>
 
           <div className="h-fit border shadow-md rounded-md hidden lg:block">
-            <div className="p-4">
-              <h2 className="font-bold text-lg">Set quantity and notes</h2>
-              <h3 className="text-sm mt-5">
-                Size : {state.product_size.size || "-"}
-              </h3>
-              <div className="mt-2">
-                <h3 className="text-sm">Quantity :</h3>
-                <div className="flex items-center gap-x-3">
-                  <div className="border w-fit bg-background rounded-lg mt-1">
-                    <div className="flex gap-x-3 py-0.5 px-3 items-center">
-                      <button
-                        disabled={state.quantity <= 1 || loading}
-                        className={cn(
-                          "text-xl font-semibold",
-                          state.quantity <= 1 && "text-muted-foreground"
-                        )}
-                        onClick={handleDecrement}
-                      >
-                        -
-                      </button>
-                      <p className="px-6">{state.quantity}</p>
-                      <button
-                        disabled={
-                          state.quantity === state.product_size.stock || loading
-                        }
-                        className={cn(
-                          "text-xl font-semibold",
-                          state.quantity === state.product_size.stock &&
-                            "text-muted-foreground"
-                        )}
-                        onClick={handleIncrement}
-                      >
-                        +
-                      </button>
-                    </div>
-                  </div>
-                  <h3 className="text-sm font-semibold">
-                    Stock : {state.product_size.stock || "-"}
-                  </h3>
-                </div>
-              </div>
-              <div className="mt-6 flex items-center">
-                <h3 className="text-base font-semibold text-muted-foreground">
-                  Sub total :
-                </h3>
-                <h2 className="text-base font-semibold ml-3">
-                  {new Intl.NumberFormat("id-ID", {
-                    style: "currency",
-                    currency: "IDR",
-                    minimumFractionDigits: 0,
-                  }).format(Number(state.total_price))}
-                </h2>
-              </div>
-              <div className="mt-5 space-y-2">
-                <Button disabled={loading} type="button" className="w-full">
-                  Buy
-                </Button>
-                <Button
-                  disabled={loading}
-                  type="button"
-                  variant="outline"
-                  className="w-full"
-                  onClick={() => handleAddCart()}
-                >
-                  + Cart
-                </Button>
-              </div>
-              <div className="w-full flex items-center justify-between mt-7">
-                <ButtonOptions />
-              </div>
-            </div>
+            <CardCheckout
+              size={state.product_size.size}
+              stock={state.product_size.stock}
+              quantity={state.quantity}
+              total_price={state.total_price}
+              loading={loading}
+              handleAddCart={handleAddCart}
+              handleDecrement={handleDecrement}
+              handleIncrement={handleIncrement}
+            />
           </div>
         </div>
       </div>
@@ -329,78 +269,20 @@ const ProductDetail = ({ product }: { product: ProductListType }) => {
       {/* Collapsible Panel */}
       <div
         className={cn(
-          "fixed bottom-20 left-0 right-0 bg-secondary transition-all duration-300 overflow-hidden shadow-[0_-2px_8px_rgba(0,0,0,0.1)]",
+          "fixed lg:hidden bottom-20 left-0 right-0 bg-secondary transition-all duration-300 overflow-hidden shadow-[0_-2px_8px_rgba(0,0,0,0.1)]",
           openCheckout ? "h-72" : "h-0"
         )}
       >
-        <div className="p-4">
-          <h2 className="font-bold text-lg">Set quantity and notes</h2>
-          <h3 className="text-sm mt-5">
-            Size : {state.product_size.size || "-"}
-          </h3>
-          <div className="mt-2">
-            <h3 className="text-sm">Quantity :</h3>
-            <div className="flex items-center gap-x-3">
-              <div className="border w-fit bg-background rounded-lg mt-1">
-                <div className="flex gap-x-3 py-0.5 px-3 items-center">
-                  <button
-                    disabled={state.quantity <= 1 || loading}
-                    className={cn(
-                      "text-xl font-semibold",
-                      state.quantity <= 1 && "text-muted-foreground"
-                    )}
-                    onClick={handleDecrement}
-                  >
-                    -
-                  </button>
-                  <p className="px-6">{state.quantity}</p>
-                  <button
-                    disabled={
-                      state.quantity === state.product_size.stock || loading
-                    }
-                    className={cn(
-                      "text-xl font-semibold",
-                      state.quantity === state.product_size.stock &&
-                        "text-muted-foreground"
-                    )}
-                    onClick={handleIncrement}
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-              <h3 className="text-sm font-semibold">
-                Stock : {state.product_size.stock || "-"}
-              </h3>
-            </div>
-          </div>
-          <div className="mt-6 flex items-center">
-            <h3 className="text-base font-semibold text-muted-foreground">
-              Sub total :
-            </h3>
-            <h2 className="text-base font-semibold ml-3">
-              {new Intl.NumberFormat("id-ID", {
-                style: "currency",
-                currency: "IDR",
-                minimumFractionDigits: 0,
-              }).format(Number(state.total_price))}
-            </h2>
-          </div>
-          <div className="mt-5 flex w-full gap-x-3">
-            <Button
-              disabled={loading}
-              type="button"
-              variant="outline"
-              className="w-full"
-              onClick={() => handleAddCart()}
-            >
-              + Cart
-            </Button>
-            <Button disabled={loading} type="button" className="w-full">
-              Buy
-            </Button>
-          </div>
-        </div>
+        <CardCheckout
+          size={state.product_size.size}
+          stock={state.product_size.stock}
+          quantity={state.quantity}
+          total_price={state.total_price}
+          loading={loading}
+          handleAddCart={handleAddCart}
+          handleDecrement={handleDecrement}
+          handleIncrement={handleIncrement}
+        />
       </div>
     </>
   );

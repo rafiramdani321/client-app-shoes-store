@@ -4,6 +4,7 @@ import NavHeader from "../(browser)/_components/navigation-header";
 import { PageNavigationMenu } from "../(browser)/_components/sidebar";
 import Container from "../(browser)/_components/container";
 import Footer from "../(browser)/_components/footer";
+import CartSidebar from "../(browser)/_components/carts";
 
 export default async function ProductLayout({
   children,
@@ -14,6 +15,7 @@ export default async function ProductLayout({
     <>
       <Navbar />
       <NavHeader />
+      <CartSidebar />
       <PageNavigationMenu />
       <div className="h-full mt-28 lg:mt-48 mb-56">
         <Container>{children}</Container>

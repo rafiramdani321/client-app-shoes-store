@@ -7,7 +7,7 @@ import { useSidebar } from "@/stores/useSidebar";
 
 const Container = ({ children }: { children: React.ReactNode }) => {
   const isDesktop = useMediaQuery("(min-width: 1024px)");
-  const { collapsed, onCollapse, onExpand } = useSidebar((state) => state);
+  const { collapsed, onCollapse } = useSidebar((state) => state);
 
   React.useEffect(() => {
     const html = document.documentElement;

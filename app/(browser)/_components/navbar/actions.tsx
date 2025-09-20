@@ -19,17 +19,29 @@ import {
 import { Button } from "@/components/ui/button";
 import { Role } from "@/constants";
 import { useCarts } from "@/hooks/useCarts";
+import { useCartSideBar } from "@/stores/useCartStore";
+import { useRouter } from "next/navigation";
 
 const Actions = () => {
+  const router = useRouter();
   const { accessToken, isAuthResolved, clearAccessToken, user } =
     useAuthStore();
   const { useGetCartsByUser } = useCarts();
+  const { collapsed, onCollapse, onExpand } = useCartSideBar((state) => state);
   const isLoggedIn = !!accessToken;
   const [loading, setLoading] = React.useState(false);
 
-  const { data, isLoading: loadingGetCarts } = useGetCartsByUser(isLoggedIn);
+  const { data } = useGetCartsByUser(isLoggedIn);
 
   if (!isAuthResolved) return null;
+
+  const toggleCartSidebar = () => {
+    if (!isLoggedIn) {
+      router.replace("/auth/signin");
+      return;
+    }
+    collapsed ? onExpand() : onCollapse();
+  };
 
   const handleLogout = async () => {
     setLoading(true);
@@ -58,21 +70,21 @@ const Actions = () => {
         </Link>
       ) : (
         <div className="flex items-center">
-          <div className="relative">
+          <button className="relative" onClick={toggleCartSidebar}>
             {data?.CartItem.length > 0 ? (
               <span
-                className="absolute bg-primary border rounded-md px-0.5
-             text-secondary text-xs -right-2 w-[22px] text-center truncate"
+                className="absolute bg-primary border rounded-md -top-1
+             text-secondary text-[10px] -right-2 w-[22px] text-center truncate"
               >
                 {data?.CartItem.length}
               </span>
             ) : null}
-            <Handbag className="w-6 h-6 cursor-pointer mr-1" />
-          </div>
+            <Handbag className="w-5 h-5 sm:w-6 sm:h-6 cursor-pointer mr-1" />
+          </button>
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Button variant="ghost" size="sm" className="rounded-md">
-                <User className="!w-6 !h-6" />
+                <User className="!w-5 !h-5 sm:!w-6 sm:!h-6" />
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent className="w-56" align="end">

@@ -6,6 +6,7 @@ import { CarouselPage } from "./_components/caraousel";
 import { PageNavigationMenu } from "./_components/sidebar";
 import NavHeader from "./_components/navigation-header";
 import Footer from "./_components/footer";
+import CartSidebar from "./_components/carts";
 
 export default async function BrowserLayout({
   children,
@@ -17,6 +18,7 @@ export default async function BrowserLayout({
       <Navbar />
       <NavHeader />
       <PageNavigationMenu />
+      <CartSidebar />
       <div className="flex justify-center mt-[5rem] lg:mt-[9rem] px-4 xl:px-10">
         <CarouselPage />
       </div>

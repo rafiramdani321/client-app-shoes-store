@@ -47,8 +47,31 @@ export function useCarts() {
     },
   });
 
+  const deleteCartItemById = useMutation({
+    mutationFn: async (id: string) => {
+      const res = await apiFetch(`/carts/${id}`, {
+        method: "DELETE",
+      });
+
+      const results = await res.json();
+      if (!res.ok) {
+        throw results;
+      }
+      return results;
+    },
+    onSuccess: (results) => {
+      showToastSuccess(results.message || "Delete cart item success");
+      queryClient.invalidateQueries({ queryKey: ["carts"] });
+    },
+    onError: (error: any) => {
+      showToastError(error.error || "Delete cart failed");
+      throw error;
+    },
+  });
+
   return {
     useGetCartsByUser,
     addCart,
+    deleteCartItemById,
   };
 }
