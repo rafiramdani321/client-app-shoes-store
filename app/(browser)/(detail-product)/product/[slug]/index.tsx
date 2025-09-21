@@ -245,7 +245,7 @@ const ProductDetail = ({ product }: { product: ProductListType }) => {
       </div>
 
       {/* Sticky bottom bar */}
-      <div className="fixed bottom-0 left-0 right-0 border-t bg-background shadow-[0_-2px_8px_rgba(0,0,0,0.1)] h-20 w-full flex items-center justify-between px-4 lg:hidden z-50">
+      <div className="fixed bottom-0 left-0 right-0 border-t bg-background shadow-[0_-2px_8px_rgba(0,0,0,0.1)] h-20 w-full flex items-center justify-between px-4 lg:hidden z-[10]">
         <div className="flex w-full justify-between items-center">
           <Button
             type="button"

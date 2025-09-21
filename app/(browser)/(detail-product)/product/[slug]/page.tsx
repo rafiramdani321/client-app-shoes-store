@@ -10,7 +10,7 @@ const PageProductDetail = async ({ params }: { params: { slug: string } }) => {
   }
 
   return (
-    <div>
+    <div className="mt-44">
       <ProductDetail product={product.data} />
     </div>
   );

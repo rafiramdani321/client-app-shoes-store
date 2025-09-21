@@ -18,7 +18,7 @@ const Navbar = () => {
 
   const Icon = collapsed ? Menu : X;
   return (
-    <nav className="fixed top-0 w-full bg-background h-[62px] md:h-16 z-[100] flex justify-between items-center px-2 sm:px-6 lg:px-16 xl:px-32 2xl:px-64">
+    <nav className="fixed top-0 w-full bg-background h-[62px] md:h-16 z-50 flex justify-between items-center px-2 sm:px-6 lg:px-16 xl:px-32 2xl:px-64">
       <div className="hidden lg:flex items-center gap-x-1">
         <Phone className="w-6 h-6" />
         <h3 className="hidden lg:block text-sm font-medium tracking-tight">

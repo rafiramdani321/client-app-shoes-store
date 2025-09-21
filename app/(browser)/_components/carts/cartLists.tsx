@@ -77,7 +77,7 @@ const CartLists = ({
                     >
                       {item.product.title}
                     </Link>
-                    <div className="text-xs text-muted-foreground flex items-center gap-x-2">
+                    <div className="text-xs text-muted-foreground items-center grid grid-cols-1 md:grid-cols-2">
                       <span>
                         {new Intl.NumberFormat("id-ID", {
                           style: "currency",
@@ -85,7 +85,6 @@ const CartLists = ({
                           minimumFractionDigits: 0,
                         }).format(Number(item.unit_price))}
                       </span>
-                      <div>-</div>
                       <div className="flex gap-x-2">
                         <span>Quantity : {item.quantity}</span>
                         <span>Size : {item.product_size.size.size}</span>

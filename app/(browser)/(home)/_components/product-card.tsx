@@ -9,7 +9,7 @@ import React from "react";
 const ProductCard = ({ product }: { product: ProductListType }) => {
   if (!product) return null;
   return (
-    <Link href={`/products/${product.slug}`} className="block">
+    <Link href={`/product/${product.slug}`} className="block">
       <div className="bg-background dark:bg-primary-foreground rounded-md">
         <div className="bg-neutral-200/30 dark:bg-black/30 flex items-center justify-center rounded-md rounded-b-none overflow-hidden aspect-[1/1]">
           <Image

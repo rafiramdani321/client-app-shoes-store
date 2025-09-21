@@ -39,12 +39,6 @@ const Container = ({ children }: { children: React.ReactNode }) => {
   return (
     <>
       <div className="w-full">{children}</div>
-      {!collapsed && (
-        <div
-          onClick={onCollapse}
-          className="fixed inset-0 bg-primary/50 z-40 lg:hidden"
-        />
-      )}
     </>
   );
 };
