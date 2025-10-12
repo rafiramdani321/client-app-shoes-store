@@ -13,7 +13,7 @@ const Sizes = () => {
   React.useEffect(() => {
     setPagination("sizes", page);
   }, [page]);
-  const limit = 2;
+  const limit = 10;
   const [sortBy, setSortBy] = React.useState<
     "size" | "created_at" | "updated_at" | undefined
   >(undefined);

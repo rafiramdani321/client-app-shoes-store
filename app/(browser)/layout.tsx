@@ -13,13 +13,15 @@ export default async function BrowserLayout({
 }) {
   return (
     <>
-      <Navbar />
-      <NavHeader />
-      <PageNavigationMenu />
-      <CartSidebar />
-      {children}
-      <div className="w-full mt-20 pt-5 h-44 bg-background border-t bottom-0 px-2 sm:px-6 lg:px-16 xl:px-32 2xl:px-64">
-        <Footer />
+      <div className="flex min-h-screen flex-col">
+        <Navbar />
+        <NavHeader />
+        <PageNavigationMenu />
+        <CartSidebar />
+        <main className="flex-1">{children}</main>
+        <footer className="w-full bg-background border-t mt-32 px-2 sm:px-6 lg:px-16 xl:px-32 2xl:px-64">
+          <Footer />
+        </footer>
       </div>
     </>
   );

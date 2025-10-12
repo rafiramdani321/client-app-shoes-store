@@ -5,6 +5,7 @@ import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
 import { RefreshAccessTokenEffect } from "@/components/refreshAccessTokenEffect";
 import { Providers } from "./providers";
+import ScrollToTop from "@/components/scrollToTop";
 
 const space_grotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -39,7 +40,10 @@ export default function RootLayout({
         >
           <RefreshAccessTokenEffect />
           <Toaster richColors />
-          <Providers>{children}</Providers>
+          <Providers>
+            <ScrollToTop />
+            {children}
+          </Providers>
         </ThemeProvider>
       </body>
     </html>

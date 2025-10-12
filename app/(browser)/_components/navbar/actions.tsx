@@ -21,6 +21,7 @@ import { Role } from "@/constants";
 import { useCarts } from "@/hooks/useCarts";
 import { useCartSideBar } from "@/stores/useCartStore";
 import { useRouter } from "next/navigation";
+import { SkeletonActions } from "./skeleton-actions";
 
 const Actions = () => {
   const router = useRouter();
@@ -33,7 +34,7 @@ const Actions = () => {
 
   const { data } = useGetCartsByUser(isLoggedIn);
 
-  if (!isAuthResolved) return null;
+  if (!isAuthResolved) return <SkeletonActions />;
 
   const toggleCartSidebar = () => {
     if (!isLoggedIn) {

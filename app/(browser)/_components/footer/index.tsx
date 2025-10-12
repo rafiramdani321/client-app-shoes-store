@@ -13,7 +13,7 @@ import {
 const Footer = () => {
   return (
     <div className="w-full">
-      <div className="mt-3 grid grid-cols-2 lg:grid-cols-1">
+      <div className="mt-3 grid grid-cols-2 lg:grid-cols-1 py-10">
         <div>
           <Logo />
           <div className="mt-3 space-y-2">
@@ -37,7 +37,7 @@ const Footer = () => {
           </div>
         </div>
       </div>
-      <div className="text-center pb-3 pt-10">
+      <div className="text-center pb-3">
         <p className="text-sm font-secondary tracking-wide">shoesstore 2025</p>
       </div>
     </div>

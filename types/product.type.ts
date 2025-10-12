@@ -17,6 +17,14 @@ export interface ProductQueryParams extends QueryParamsBase {
     | "updated_at";
 }
 
+export interface ProductQueryParamsCategorySlug extends QueryParamsBase {
+  category_slug: string;
+  sortBy?: "created_at" | "price";
+  minPrice?: number;
+  maxPrice?: number;
+  sizes?: string[];
+}
+
 export interface ProductBaseType {
   title: string;
   slug: string;
@@ -60,4 +68,12 @@ export interface ProductResponse {
     limit: number;
     totalPages: number;
   };
+}
+
+export interface DropdownMenuSortByProductType {
+  id: number;
+  name: string;
+  sortBy: "created_at" | "price";
+  sortOrder: "asc" | "desc";
+  value: string;
 }

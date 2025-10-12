@@ -10,12 +10,12 @@ import { useAuthStore } from "@/stores/useAuthStore";
 import { showToastError } from "@/lib/toast";
 import { ProductListType } from "@/types/product.type";
 import AppBreadcrumb from "@/components/appBreadcrumb";
-import ImagesProduct from "../_components/imageProduct";
+import ImagesProduct from "./_components/imageProduct";
 import { Button } from "@/components/ui/button";
-import ButtonOptions from "../_components/buttonOptions";
+import ButtonOptions from "./_components/buttonOptions";
 import { useRouter } from "next/navigation";
 import { useCarts } from "@/hooks/useCarts";
-import CardCheckout from "../_components/cardCheckout";
+import CardCheckout from "./_components/cardCheckout";
 
 const ProductDetail = ({ product }: { product: ProductListType }) => {
   const DOMPurify = React.useMemo(

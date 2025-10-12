@@ -3,6 +3,7 @@ import ResultsNewArivals from "./results";
 import ProductsService from "@/services/products";
 
 const ProductNewArivals = async () => {
+  await new Promise((res) => setTimeout(res, 5000));
   const responses = await ProductsService.getProducts({
     limit: 15,
     sortBy: "updated_at",

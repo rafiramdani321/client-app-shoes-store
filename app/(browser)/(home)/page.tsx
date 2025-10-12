@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Suspense } from "react";
 import ProductNewArivals from "./new-arivals/page";
 import ProductNike from "./nike/page";
 import ProductAdidas from "./adidas/page";
@@ -6,6 +6,7 @@ import CategoriesGender from "./categories-gender/page";
 import Blog from "./blog/page";
 import { CarouselPage } from "../_components/caraousel";
 import Container from "../_components/container";
+import SkeletonProducts from "./_components/skeleton-products";
 
 const HomePage = () => {
   return (
@@ -15,9 +16,15 @@ const HomePage = () => {
       </div>
       <div className="h-full px-2 sm:px-6 lg:px-16 xl:px-32 2xl:px-64 mt-10 lg:mt-20 mb-56">
         <Container>
-          <ProductNewArivals />
-          <ProductNike />
-          <ProductAdidas />
+          <Suspense fallback={<SkeletonProducts />}>
+            <ProductNewArivals />
+          </Suspense>
+          <Suspense fallback={<SkeletonProducts />}>
+            <ProductNike />
+          </Suspense>
+          <Suspense fallback={<SkeletonProducts />}>
+            <ProductAdidas />
+          </Suspense>
           <CategoriesGender />
           <Blog />
         </Container>
