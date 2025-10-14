@@ -25,6 +25,15 @@ export interface ProductQueryParamsCategorySlug extends QueryParamsBase {
   sizes?: string[];
 }
 
+export interface ProductQueryParamsSubCategorySlug extends QueryParamsBase {
+  category_slug: string;
+  subcategory_slug: string;
+  sortBy?: "created_at" | "price";
+  minPrice?: number;
+  maxPrice?: number;
+  sizes?: string[];
+}
+
 export interface ProductBaseType {
   title: string;
   slug: string;

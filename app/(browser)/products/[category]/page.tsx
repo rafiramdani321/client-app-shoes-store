@@ -36,12 +36,20 @@ const PageCategory = async ({ params, searchParams }: PageCategoryProps) => {
     sizes: searchParams.sizes,
   });
 
+  const breadcrumbItems = [
+    { label: "Home", href: "/" },
+    ...(products.data.length > 0
+      ? [{ label: products.data[0].category.slug }]
+      : [{ label: "Category Unknown" }]),
+  ];
+
   return (
     <div className="mt-24 md:mt-32 lg:mt-40 xl:mt-48">
       <ProductsCategoryList
         data={products.data}
         meta={products.meta}
         queryParams={{ sortBy: currentSortBy, sortOrder: currentSortOrder }}
+        breadcrumbItems={breadcrumbItems}
       />
     </div>
   );

@@ -2,6 +2,7 @@ import { apiFetch } from "@/lib/api";
 import {
   ProductQueryParams,
   ProductQueryParamsCategorySlug,
+  ProductQueryParamsSubCategorySlug,
 } from "@/types/product.type";
 
 export default class ProductsService {
@@ -46,6 +47,32 @@ export default class ProductsService {
     const data = await res.json();
     if (!res.ok)
       throw new Error(data.message || data.error || "Failed fetch products");
+    return data.data;
+  }
+
+  static async getProductsBySubCategorySlug(
+    params: ProductQueryParamsSubCategorySlug
+  ) {
+    const qs = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => {
+      if (v !== undefined && v !== null && v !== "") {
+        if (Array.isArray(v)) {
+          v.forEach((val) => qs.append(k, String(val)));
+        } else {
+          qs.append(k, String(v));
+        }
+      }
+    });
+
+    const res = await apiFetch(
+      `/products/sub-category?${qs.toString()}`,
+      { method: "GET" },
+      { withAuth: false }
+    );
+    const data = await res.json();
+    if (!res.ok) {
+      throw new Error(data.message || data.error || "Failed fetch products");
+    }
     return data.data;
   }
 

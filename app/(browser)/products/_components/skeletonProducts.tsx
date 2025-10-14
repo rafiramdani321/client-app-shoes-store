@@ -18,7 +18,7 @@ const SkeletonProducts = () => {
             </div>
             <div className="w-full grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-3 mt-5">
               {Array.from({ length: 10 }).map((_, i) => (
-                <Skeleton className="w-full h-48" />
+                <Skeleton className="w-full h-48" key={i} />
               ))}
             </div>
           </div>

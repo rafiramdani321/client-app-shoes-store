@@ -34,22 +34,20 @@ type ProductsListProps = {
     sortBy: ProductQueryParams["sortBy"];
     sortOrder: "asc" | "desc";
   };
+  breadcrumbItems: {
+    label: string;
+    href?: string;
+  }[];
 };
 
 const ProductsCategoryList = ({
   data,
   meta,
   queryParams,
+  breadcrumbItems,
 }: ProductsListProps) => {
   const router = useRouter();
   const searchParams = useSearchParams();
-
-  const breadcrumbItems = [
-    { label: "Home", href: "/" },
-    ...(data.length > 0
-      ? [{ label: data[0].category.slug }]
-      : [{ label: "Category Unknown" }]),
-  ];
 
   const initialStateFiltered = {
     search: searchParams.get("search") || "",

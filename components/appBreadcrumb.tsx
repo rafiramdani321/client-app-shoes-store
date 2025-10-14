@@ -12,7 +12,7 @@ import Link from "next/link";
 
 type BreadcrumbItemType = {
   label: string;
-  href?: string; // jika tidak ada href, berarti current page
+  href?: string;
 };
 
 const AppBreadcrumb = ({ items }: { items: BreadcrumbItemType[] }) => {
@@ -24,12 +24,12 @@ const AppBreadcrumb = ({ items }: { items: BreadcrumbItemType[] }) => {
           return (
             <React.Fragment key={index}>
               <BreadcrumbItem>
-                {isLast && !item.href ? (
+                {isLast || !item.href ? (
                   <BreadcrumbPage className="font-semibold">
                     {item.label}
                   </BreadcrumbPage>
                 ) : (
-                  <Link href={item.href!}>{item.label}</Link>
+                  <Link href={item.href}>{item.label}</Link>
                 )}
               </BreadcrumbItem>
               {!isLast && <BreadcrumbSeparator />}
