@@ -16,7 +16,7 @@ import {
 import { useRouter } from "next/navigation";
 import { Eye, EyeOff, LoaderCircle, X } from "lucide-react";
 import { apiFetch } from "@/lib/api";
-import { showToastError } from "@/lib/toast";
+import { showToastError, showToastSuccess } from "@/lib/toast";
 import { jwtDecode } from "jwt-decode";
 import { UserDecodedPayload } from "@/types/user.type";
 import { useAuthStore } from "@/stores/useAuthStore";
@@ -24,6 +24,7 @@ import { buildErrorMap } from "@/lib/errorMap";
 import clsx from "clsx";
 import { loginValidation } from "@/lib/validations/validationSchema";
 import { validationResponses } from "@/lib/validations";
+import { useGoogleLogin } from "@react-oauth/google";
 
 const Signin = () => {
   const router = useRouter();
@@ -37,6 +38,7 @@ const Signin = () => {
   const [autoFocus, setAutoFocus] = React.useState(false);
   const [visiblePassword, setVisiblePassword] = React.useState(false);
   const [error, setErrors] = React.useState("");
+  const [resendVerification, setResendVerification] = React.useState(false);
   const [errorsInput, setErrorsInput] = React.useState<
     Partial<Record<keyof typeof formData, string[]>>
   >({});
@@ -76,6 +78,68 @@ const Signin = () => {
     }));
   };
 
+  const googleLogin = useGoogleLogin({
+    onSuccess: async (tokenResponse) => {
+      try {
+        setLoading(true);
+        const res = await apiFetch(`/auth/google`, {
+          method: "POST",
+          body: JSON.stringify({
+            token: tokenResponse.access_token,
+          }),
+        });
+
+        const data = await res.json();
+        if (!res.ok) {
+          showToastError("Google login failed.");
+          return;
+        }
+
+        const accessToken = data.data.accessToken;
+        const decoded = jwtDecode<UserDecodedPayload>(accessToken);
+        setAccessToken(accessToken);
+        setUser(decoded);
+        router.push("/");
+      } catch (err) {
+        showToastError("Something went wrong.");
+      } finally {
+        setLoading(false);
+      }
+    },
+    onError: () => showToastError("Google login failed."),
+    flow: "implicit",
+  });
+
+  const resendEmail = async () => {
+    if (!formData.email || formData.email === "") {
+      showToastError("Something went wrong.....");
+      return;
+    }
+
+    setLoading(true);
+    try {
+      const res = await apiFetch(`/auth/resend-email-verification`, {
+        method: "POST",
+        body: JSON.stringify({ email: formData.email }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        showToastError("Something went wrong");
+        return;
+      }
+
+      setFormData({ email: "", password: "" });
+      setErrorsInput({});
+      setErrors("");
+
+      showToastSuccess(data.message, "top-center", 6000);
+    } catch (error) {
+      showToastError("Something went wrong");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const onSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
@@ -102,6 +166,10 @@ const Signin = () => {
         showToastError("Validation failed.");
         if (data.details && Array.isArray(data.details)) {
           setErrorsInput(buildErrorMap<keyof typeof formData>(data.details));
+          if (data.details[0].field === "request_new_verification") {
+            setErrors(data?.error);
+            setResendVerification(true);
+          }
         } else {
           setErrors(data.error);
         }
@@ -136,11 +204,21 @@ const Signin = () => {
         </CardHeader>
         <CardContent>
           {error !== "" ? (
-            <div className="flex items-center gap-x-1 mb-4">
+            <div className="flex items-center gap-x-2 mb-4">
               <div className="border rounded-full p-0.5 bg-rose-200">
                 <X className="text-rose-500 w-4 h-4" />
               </div>
-              <p className="text-rose-500 font-semibold text-sm">{error}</p>
+              <p className="text-rose-500 font-semibold text-xs">{error}</p>
+              {resendVerification ? (
+                <Button
+                  type="button"
+                  size="sm"
+                  onClick={resendEmail}
+                  disabled={loading}
+                >
+                  Resend Verification
+                </Button>
+              ) : null}
             </div>
           ) : null}
           <form onSubmit={onSubmit}>
@@ -218,20 +296,31 @@ const Signin = () => {
                   <LoaderCircle className="animate-spin" />
                 )}
               </Button>
-              <Button disabled={loading} variant="outline" className="w-full">
-                Sign in with Google
-              </Button>
-            </div>
-            <div className="flex justify-center text-xs gap-x-1 text-muted-foreground mt-4">
-              <p>Don't have an account:</p>
-              <Link
-                href="/auth/signup"
-                className="hover:underline uppercase font-semibold hover:text-primary"
-              >
-                Sign up
-              </Link>
             </div>
           </form>
+          <div className="mt-3 grid gap-3">
+            <Button
+              disabled={loading}
+              variant="outline"
+              className="w-full"
+              onClick={() => googleLogin()}
+            >
+              {!loading ? (
+                "Sign in with Google"
+              ) : (
+                <LoaderCircle className="animate-spin" />
+              )}
+            </Button>
+          </div>
+          <div className="flex justify-center text-xs gap-x-1 text-muted-foreground mt-4">
+            <p>Don't have an account:</p>
+            <Link
+              href="/auth/signup"
+              className="hover:underline uppercase font-semibold hover:text-primary"
+            >
+              Sign up
+            </Link>
+          </div>
         </CardContent>
       </Card>
     </div>

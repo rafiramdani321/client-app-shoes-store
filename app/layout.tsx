@@ -3,9 +3,10 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "next-themes";
 import { Toaster } from "sonner";
-import { RefreshAccessTokenEffect } from "@/components/refreshAccessTokenEffect";
+import { GoogleOAuthProvider } from "@react-oauth/google";
 import { Providers } from "./providers";
 import ScrollToTop from "@/components/scrollToTop";
+import { RefreshAccessTokenEffect } from "@/components/refreshAccessTokenEffect";
 
 const space_grotesk = Space_Grotesk({
   subsets: ["latin"],
@@ -33,18 +34,22 @@ export default function RootLayout({
       <body
         className={`${inter.variable} ${space_grotesk.variable} antialiased`}
       >
-        <ThemeProvider
-          attribute="class"
-          defaultTheme="light"
-          enableSystem={false}
+        <GoogleOAuthProvider
+          clientId={process.env.NEXT_PUBLIC_GOOGLE_CLIENT_ID!}
         >
-          <RefreshAccessTokenEffect />
-          <Toaster richColors />
-          <Providers>
-            <ScrollToTop />
-            {children}
-          </Providers>
-        </ThemeProvider>
+          <ThemeProvider
+            attribute="class"
+            defaultTheme="light"
+            enableSystem={false}
+          >
+            <RefreshAccessTokenEffect />
+            <Toaster richColors />
+            <Providers>
+              <ScrollToTop />
+              {children}
+            </Providers>
+          </ThemeProvider>
+        </GoogleOAuthProvider>
       </body>
     </html>
   );

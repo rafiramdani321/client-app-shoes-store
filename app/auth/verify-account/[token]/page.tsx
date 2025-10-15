@@ -65,7 +65,8 @@ const VerifyAccount = () => {
       setAccessToken(accessToken);
       setUser(decoded);
 
-      router.push("/");
+      showToastSuccess(data.message, "top-right", 5000);
+      router.replace("/");
     } catch (error) {
       showToastError("Something went wrong.");
     }
