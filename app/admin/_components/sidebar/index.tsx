@@ -45,7 +45,10 @@ export function AppSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   // Filter navigasi
   const filteredNavigations = React.useMemo(() => {
     return NavigationsSidebar.filter((nav) => {
-      if (nav.title === "Role Management" && user?.role !== Role.SUPERADMIN) {
+      if (
+        nav.title === "Role Management" &&
+        user?.payload.role !== Role.SUPERADMIN
+      ) {
         return false;
       }
       return true;

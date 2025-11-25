@@ -91,18 +91,28 @@ const Actions = () => {
             <DropdownMenuContent className="w-56" align="end">
               <DropdownMenuLabel>My Account</DropdownMenuLabel>
               <DropdownMenuGroup>
-                {user?.role === Role.ADMIN || user?.role === Role.SUPERADMIN ? (
-                  <DropdownMenuItem>
-                    <Link href="/admin/dashboard/analytics">
+                {user?.payload.role === Role.ADMIN ||
+                user?.payload.role === Role.SUPERADMIN ? (
+                  <Link href="/admin/dashboard/analytics">
+                    <DropdownMenuItem className="cursor-pointer">
                       Admin Dashboard
-                    </Link>
-                  </DropdownMenuItem>
+                    </DropdownMenuItem>
+                  </Link>
                 ) : null}
-                <DropdownMenuItem>Profile</DropdownMenuItem>
-                <DropdownMenuItem>Settings</DropdownMenuItem>
+                <Link href="/u/settings">
+                  <DropdownMenuItem className="cursor-pointer">
+                    Profile
+                  </DropdownMenuItem>
+                </Link>
+                <Link href="/#">
+                  <DropdownMenuItem className="cursor-pointer">
+                    Settings
+                  </DropdownMenuItem>
+                </Link>
               </DropdownMenuGroup>
               <DropdownMenuSeparator />
               <DropdownMenuItem
+                className="cursor-pointer"
                 disabled={loading}
                 onClick={() => handleLogout()}
               >

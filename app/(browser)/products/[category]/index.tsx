@@ -6,7 +6,7 @@ import { ChevronDown, SlidersHorizontal } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 import { unformatNumber } from "@/lib/convertNumberIDR";
-import { dropdownMenuSortByProduct } from "@/data/home";
+import { dropdownMenuSortByProduct } from "@/data/data";
 import { ProductListType, ProductQueryParams } from "@/types/product.type";
 import AppBreadcrumb from "@/components/appBreadcrumb";
 import ProductCard from "../../(home)/_components/product-card";

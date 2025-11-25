@@ -148,6 +148,7 @@ const Signin = () => {
     if (!errorsValidationFront.success) {
       const errorsFront = validationResponses(errorsValidationFront);
       setErrorsInput(buildErrorMap<keyof typeof formData>(errorsFront));
+      showToastError("Validation failed.");
       setAutoFocus(true);
       setLoading(false);
       return;
@@ -167,11 +168,11 @@ const Signin = () => {
         if (data.details && Array.isArray(data.details)) {
           setErrorsInput(buildErrorMap<keyof typeof formData>(data.details));
           if (data.details[0].field === "request_new_verification") {
-            setErrors(data?.error);
+            setErrors(data.message);
             setResendVerification(true);
           }
         } else {
-          setErrors(data.error);
+          setErrors(data.message);
         }
         return;
       }

@@ -1,5 +1,5 @@
 import React from "react";
-import Logo from "../navbar/Logo";
+import Logo from "./navbar/Logo";
 import {
   Facebook,
   Instagram,

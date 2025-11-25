@@ -1,5 +1,5 @@
-import Logo from "@/app/(browser)/_components/navbar/Logo";
-import Search from "@/app/(browser)/_components/navbar/Search";
+import Logo from "@/components/navbar/Logo";
+import Search from "@/components/navbar/Search";
 import React from "react";
 
 const Navbar = () => {

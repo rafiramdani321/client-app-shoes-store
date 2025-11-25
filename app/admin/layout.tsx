@@ -1,13 +1,13 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/navigation";
 
+import { Role } from "@/constants";
 import NavbarAdmin from "./_components/navbar";
 import { SidebarInset, SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "./_components/sidebar";
 import { useAuthStore } from "@/stores/useAuthStore";
-import { useRouter } from "next/navigation";
-import { Role } from "@/constants";
 
 export default function AdminLayout({
   children,
@@ -20,14 +20,17 @@ export default function AdminLayout({
   React.useEffect(() => {
     if (!isAuthResolved) return;
 
-    const isAdmin = user?.role === Role.ADMIN || user?.role === Role.SUPERADMIN;
+    const isAdmin =
+      user?.payload.role === Role.ADMIN ||
+      user?.payload.role === Role.SUPERADMIN;
 
     if (!accessToken || !user || !isAdmin) {
       router.replace("/");
     }
   }, [accessToken, user, isAuthResolved, router]);
 
-  const isAdmin = user?.role === Role.ADMIN || user?.role === Role.SUPERADMIN;
+  const isAdmin =
+    user?.payload.role === Role.ADMIN || user?.payload.role === Role.SUPERADMIN;
 
   if (!isAuthResolved || !accessToken || !user || !isAdmin) {
     return null;

@@ -1,4 +1,5 @@
 import { DropdownMenuSortByProductType } from "@/types/product.type";
+import { NavigationListProfileUserSettings } from "@/types/user.type";
 
 export const dropdownMenuSortByProduct: DropdownMenuSortByProductType[] = [
   {
@@ -21,5 +22,26 @@ export const dropdownMenuSortByProduct: DropdownMenuSortByProductType[] = [
     sortBy: "price",
     sortOrder: "asc",
     value: "price-low-to-high",
+  },
+];
+
+export const navigationMenuUserSettings: NavigationListProfileUserSettings[] = [
+  {
+    id: 1,
+    title: "Profile",
+    url: "/",
+    value: "profile",
+  },
+  {
+    id: 2,
+    title: "Shipping Address",
+    url: "/shipping-address",
+    value: "shipping-address",
+  },
+  {
+    id: 3,
+    title: "Purchase History",
+    url: "/purchase-history",
+    value: "purchase-history",
   },
 ];

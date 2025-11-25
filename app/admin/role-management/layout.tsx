@@ -15,13 +15,13 @@ export default function LayoutRoleManagement({
 
   React.useEffect(() => {
     if (!isAuthResolved) return;
-    const isSuperAdmin = user?.role === Role.SUPERADMIN;
+    const isSuperAdmin = user?.payload.role === Role.SUPERADMIN;
     if (!accessToken || !user || !isSuperAdmin) {
       router.replace("/");
     }
   }, [accessToken, user, isAuthResolved, router]);
 
-  const isSuperAdmin = user?.role === Role.SUPERADMIN;
+  const isSuperAdmin = user?.payload.role === Role.SUPERADMIN;
   if (!isAuthResolved || !accessToken || !user || !isSuperAdmin) {
     return null;
   }
