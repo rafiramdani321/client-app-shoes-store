@@ -13,3 +13,11 @@ export interface NavigationListProfileUserSettings {
   url?: string;
   value: string;
 }
+
+export interface UpdateMyProfile {
+  username: string;
+  fullname: string;
+  date_of_birth: Date | undefined;
+  gender: "MALE" | "FEMALE" | "";
+  phone_number: string;
+}

@@ -347,7 +347,7 @@ const AddProduct = () => {
             className="hidden"
           />
           <Button
-            disabled={loading}
+            disabled={loading}  
             type="button"
             variant="outline"
             className="mt-2 ml-3"
