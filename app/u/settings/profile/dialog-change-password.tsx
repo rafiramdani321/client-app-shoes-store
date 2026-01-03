@@ -18,7 +18,6 @@ import { validationResponses } from "@/lib/validations";
 import { changeMyPasswordValidation } from "@/lib/validations/validationSchema";
 import { useRouter } from "next/navigation";
 import React from "react";
-import { string } from "zod";
 
 interface DialogChangePasswordProps {
   openDialog: boolean;
